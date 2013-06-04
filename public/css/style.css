@@ -1,0 +1,95 @@
+body {
+    padding-top: 60px;
+    padding-bottom: 40px;
+}
+
+.zf-green {
+    color: #68b604;
+}
+
+.btn-success {
+	background-color: #57a900;
+	background-image: -moz-linear-gradient(top, #70d900, #57a900);
+	background-image: -ms-linear-gradient(top, #70d900, #57a900);
+	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#70d900), to(#57a900));
+	background-image: -webkit-linear-gradient(top, #70d900, #57a900);
+	background-image: -o-linear-gradient(top, #70d900, #57a900);
+	background-image: linear-gradient(top, #70d900, #57a900);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#70d900', endColorstr='#57a900', GradientType=0);
+}
+
+.btn-success:hover,
+.btn-success:active,
+.btn-success.active,
+.btn-success.disabled,
+.btn-success[disabled] {
+	background-color: #57a900;
+}
+
+.btn-success:active, .btn-success.active {
+	background-color: #57a900;
+}
+
+div.container a.brand {
+    /*background: url("../img/zf2-logo.png") no-repeat scroll 0 10px transparent;*/
+    margin-left: 0;
+    padding: 8px 20px 12px 40px;
+}
+
+#loading {
+	position:absolute;
+	top:50%;
+	width:100%;
+	margin-top:-70px
+}
+
+#loading .title {
+	font-family:"Exo",sans-serif;
+	font-size:2em;
+	color:gray;
+	text-align:center;
+	white-space:nowrap;
+	display:block
+}
+
+#loading .logo {
+	background:url("/img/loading.gif") no-repeat center;
+	display:block;
+	height:120px
+}
+
+.navbar .brand {
+	display:block;
+	float:left;
+	text-transform: capitalize;
+	text-decoration: none;
+	padding:10px 20px 10px;
+	margin-left:-10px;
+	font-size:22px;
+	font-weight:400;
+	color:#555;
+	text-shadow:0 1px 0 #777
+}
+
+.navbar .brand:hover {
+	text-decoration:none;
+	color: #888;
+	text-shadow: 0 1px #777
+}
+
+.navbar-inverse .brand {
+	color:#999;
+	text-shadow:0 -1px 0 rgba(0,0,0,0.25)
+}
+
+
+/**
+ * Icons styles
+ */
+.delete-icon {
+	background-image: url("/img/icons/delete.png") !important;
+}
+
+.add-icon {
+	background-image: url("/img/icons/add.png") !important;
+}

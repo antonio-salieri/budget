@@ -1,0 +1,61 @@
+<?php
+
+namespace Budget\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Company
+ *
+ * @ORM\Table(name="company")
+ * @ORM\Entity
+ */
+class Company
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="smallint", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="name", type="string", length=25, nullable=false)
+     */
+    private $name;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="is_11", type="boolean", nullable=false)
+     */
+    private $is11;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\ManyToMany(targetEntity="Budget\Entity\TransactionType", inversedBy="company")
+     * @ORM\JoinTable(name="link_user_company",
+     *   joinColumns={
+     *     @ORM\JoinColumn(name="company_id", referencedColumnName="id")
+     *   },
+     *   inverseJoinColumns={
+     *     @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     *   }
+     * )
+     */
+    private $user;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->user = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
+}

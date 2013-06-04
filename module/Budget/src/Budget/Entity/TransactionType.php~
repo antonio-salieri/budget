@@ -1,0 +1,60 @@
+<?php
+
+namespace Budget\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * TransactionType
+ *
+ * @ORM\Table(name="transaction_type")
+ * @ORM\Entity
+ */
+class TransactionType
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="smallint", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="name", type="string", length=50, nullable=false)
+     */
+    private $name;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="type", type="boolean", nullable=false)
+     */
+    private $type;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="is_11", type="boolean", nullable=false)
+     */
+    private $is11;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\ManyToMany(targetEntity="Budget\Entity\Company", mappedBy="user")
+     */
+    private $company;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->company = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
+}
