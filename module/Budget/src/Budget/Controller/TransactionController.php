@@ -7,13 +7,8 @@ use Zend\View\Model\JsonModel;
 
 // use Zend\View\Model\JsonModel;
 
-class UserController extends AbstractActionController
+class TransactionController extends AbstractActionController
 {
-//	private $acceptCriteria = array(
-//		'Zend\View\Model\ViewModel' => array('text/html'),
-//		'Zend\View\Model\JsonModel' => array('application/json'),
-//		'Zend\View\Model\FeedModel' => array('application/rss+xml')
-//	);
 	
     public function indexAction()
     {
@@ -22,11 +17,9 @@ class UserController extends AbstractActionController
 		$limit = $this->getRequest()->getQuery('limit', 25);
 		
 		try {
-			/** @var Budget\Service\UserService */
-			$service = $this->getServiceLocator()->get('budget.service.user');
+			/** @var Budget\Service\TransactionService */
+			$service = $this->getServiceLocator()->get('budget.service.transaction');
 			$result = $service->findAll(false, false);
-//$result = array('id'=>1, 'firstName'=>'Petar', 'lastName'=>'Petrović', 'companies'=>array(1,2));
-//			var_dump($result);die;
 		} catch (\Exception $e) {
 			return new JsonModel(array(
 				'success' => false,
@@ -43,7 +36,7 @@ class UserController extends AbstractActionController
 	
 	public function updateAction()
 	{
-		$service = $this->getServiceLocator()->get('budget.service.user');
+		$service = $this->getServiceLocator()->get('budget.service.transaction');
 		
 		try {
 			$data = \Zend\Json\Decoder::decode($this->getRequest()->getContent(), \Zend\Json\Json::TYPE_ARRAY);
@@ -54,20 +47,18 @@ class UserController extends AbstractActionController
 			return new JsonModel(array(
 				'success' => false,
 				'msg' => $e->getMessage()
-//				'msg' => $this->translate($e->getMessage())
 			));
 		}
 		
 		return new JsonModel(array(
 			'success' => true,
 			'msg' => 'Update succeeded'
-//			'msg' => $this->translate('Uspešan update')
 		));
 	}
 	
 	public function addAction()
 	{
-		$service = $this->getServiceLocator()->get('budget.service.user');
+		$service = $this->getServiceLocator()->get('budget.service.transaction');
 		
 		try {
 			$data = \Zend\Json\Decoder::decode($this->getRequest()->getContent(), \Zend\Json\Json::TYPE_ARRAY);
@@ -89,7 +80,7 @@ class UserController extends AbstractActionController
 	
 	public function deleteAction()
 	{
-		$service = $this->getServiceLocator()->get('budget.service.user');
+		$service = $this->getServiceLocator()->get('budget.service.transaction');
 		
 		try {
 			$data = \Zend\Json\Decoder::decode($this->getRequest()->getContent(), \Zend\Json\Json::TYPE_ARRAY);
@@ -107,33 +98,5 @@ class UserController extends AbstractActionController
 			'success' => true,
 			'msg' => 'Addition succeeded'
 		));
-	}
-	
-	/**
-	 * @deprecated
-	 * @return \Zend\View\Model\JsonModel
-	 */
-	public function companiesAction()
-	{
-		$service = $this->getServiceLocator()->get('budget.service.user');
-		
-		try {
-			$data = \Zend\Json\Decoder::decode($this->getRequest()->getContent(), \Zend\Json\Json::TYPE_ARRAY);
-			$user_companies = $service->getUserCompanies(
-				$data['id']
-			);
-			
-		} catch (\Exception $e) {
-			return new JsonModel(array(
-				'success' => false,
-				'msg' => $e->getMessage()
-			));
-		}
-		
-		return new JsonModel(array(
-			'success' => true,
-			'result' => $user_companies,
-			'msg' => 'Addition succeeded'
-		));
-	}
+	}	
 }

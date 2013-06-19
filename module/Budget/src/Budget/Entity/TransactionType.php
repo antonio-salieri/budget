@@ -12,6 +12,10 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class TransactionType
 {
+	const INCOME_TYPE = 0;
+	const OUTCOME_TYPE = 1;
+	
+	
     /**
      * @var integer
      *
@@ -29,9 +33,9 @@ class TransactionType
     private $name;
 
     /**
-     * @var boolean
+     * @var integer
      *
-     * @ORM\Column(name="type", type="boolean", nullable=false)
+     * @ORM\Column(name="type", type="integer", nullable=false)
      */
     private $type;
 

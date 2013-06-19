@@ -24,7 +24,10 @@ Ext.define('Budget.view.admin.acct_type.List' ,{
 			header: 'Type',  
 			dataIndex: 'type',  
 			flex: 1,
-			editable: true
+			editable: true,
+			renderer: function(val) {
+				return (val == 1) ? 'Outcome':'Income';
+			}
 		}, {
 			header: 'Is 1:1', 
 			dataIndex: 'is11',  

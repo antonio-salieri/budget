@@ -1,6 +1,6 @@
-Ext.define('Budget.store.UserCompanies', {
+Ext.define('Budget.store.Contos', {
     extend: 'Ext.data.Store',
-    model: 'Budget.model.UserCompany',
+    model: 'Budget.model.Conto',
 	
 	autoLoad: true,
 	
@@ -8,15 +8,19 @@ Ext.define('Budget.store.UserCompanies', {
 		type: 'ajax',
 //		headers: {'Accept':'application/json'},
 		api: {
-			read	: '/user/companies',
+			read	: '/transaction',
 			update	: undefined,
-			create  : undefined,
+			create  : '/transaction/add',
 			destroy : undefined
 		},
 		reader: {
 			type: 'json',
 			root: 'result',
 			successProperty: 'success'
+		},
+		writer : {
+			type : "json",
+			writeAllFields : false
 		}
 	}
 	

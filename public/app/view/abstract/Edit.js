@@ -1,8 +1,10 @@
 Ext.define('Budget.view.abstract.Edit' ,{
 	extend: 'Ext.window.Window',
 
+	modal: true,
 	editTitle: 'Edit',
 	addTitle: 'Add',
+	viewTitle: 'View',
 	
 	layout: 'fit',
 	autoShow: true,

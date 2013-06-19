@@ -2,9 +2,6 @@ Ext.define('Budget.view.Conto' ,{
 	extend: 'Ext.panel.Panel',
 	alias: 'widget.contopanel',
 
-	requires: ['Budget.view.conto.List'],
-	
-	
     initComponent: function() {
 		this.layout = 'border';
 		this.autoScroll = false;
@@ -16,12 +13,24 @@ Ext.define('Budget.view.Conto' ,{
 //			flex: 10
 		}, {
 			split: true,
+			floatable : true,
+			collapsed:true,
 			xtype: 'panel',
-			title: false,
+			title: 'Totals',
+			collapsible : true,
 			html: 'Totals',
-			region: 'south',
-			height: 100
-//			flex: 1
+			region: 'east',
+			width: 250
+		}, {
+			split: true,
+			floatable : true,
+			collapsed:true,
+			xtype: 'panel',
+			title: 'Filter',
+			collapsible : true,
+			html: 'Filters',
+			region: 'north',
+			height: 50
 		}];
 	
 		this.callParent(arguments);

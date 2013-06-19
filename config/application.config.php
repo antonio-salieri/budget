@@ -5,7 +5,7 @@ return array(
 		'DoctrineORMModule',
 		'DoctrineModule',
 //		'BjyProfiler',
-		'ZendDeveloperTools',
+//		'ZendDeveloperTools',
 //        'Application',
 		'Budget'
     ),

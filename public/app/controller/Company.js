@@ -57,7 +57,12 @@ Ext.define('Budget.controller.Company', {
 
 		record.set(values);
 		win.close();
-		this.getCompaniesStore().sync();
+		this.getCompaniesStore().sync({
+			callback: function() {
+				this.getCompaniesStore().reload();
+			},
+			scope: this
+		});
 	},
 	
 	addRecord: function(button) {

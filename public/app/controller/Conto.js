@@ -1,45 +1,36 @@
-Ext.define('Budget.controller.User', {
+Ext.define('Budget.controller.Conto', {
     extend: 'Ext.app.Controller',
 
-	stores: ['Users'],
-	models: ['User'],
+	stores: ['Contos'],
+	models: ['Conto'],
 	views: [
-        'admin.user.List',
-        'admin.user.Edit'
+        'conto.List',
+        'conto.Edit'
     ],
 	
     init: function() {
         this.control({
-//            'viewport > panel': {
-//                render: this.onPanelRendered
-//            }
-			'userlist': {
-				itemdblclick: this.showEditRecordForm
+			'contolist': {
+				itemdblclick: this.showItemDetails
 			},
 			
-			'userlist toolbar button[action=add]': {
+			'contolist toolbar button[action=add]': {
 				click: this.showAddRecordForm
 			},
 			
-			'useredit button[action=add]': {
+			'contoedit button[action=add]': {
 				click: this.addRecord
-			},
-			
-			'useredit button[action=edit]': {
-				click: this.updateRecord
 			}
-			
         });
     },	
 	
 	showEditRecordForm: function(grid, record) {
-		var view = Ext.widget('useredit', {action: 'edit'});
-		view.down('form')
-			.loadRecord(record);
+		var view = Ext.widget('contoedit', {action: 'edit'});
+		view.down('form').loadRecord(record);
 	},
 	
 	showAddRecordForm: function() {
-		var view = Ext.widget('useredit', {action: 'add'});
+		var view = Ext.widget('contoedit', {action: 'add'});
 		return view;
 	},
 	
@@ -52,18 +43,25 @@ Ext.define('Budget.controller.User', {
 
 		record.set(values);
 		win.close();
-		this.getUsersStore().sync({
+		this.getContosStore().sync({
 			callback: function() {
-				this.getUsersStore().reload();
+				this.getContosStore().reload();
 			},
 			scope: this
 		});
 	},
 	
+	showItemDetails: function(grid, record) {
+		var view = Ext.widget('contoedit', {action: 'view'});
+		view.down('form').applyToField({disabled:true});
+		view.down('form').loadRecord(record);
+	},
+	
+	
 	addRecord: function(button) {
 		var win = button.up('window'),
 			form = win.down('form'),
-			store = this.getUsersStore(),
+			store = this.getContosStore(),
 			values = form.getValues();
 		
 		if (form.isValid())

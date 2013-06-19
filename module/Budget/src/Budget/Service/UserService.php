@@ -20,16 +20,32 @@ class UserService extends AbstractBudgetService
 		return $entity->getCompanies();
 	}
 	
-	public function findAll($return_entities = true, $json = false, array $criteria = array(), array $orderBy = null, $limit = null, $offset = null)
+	protected function _fillEntity($entity, array $data)
 	{
-		$result = parent::findAll($return_entities, $json, $criteria, $orderBy, $limit, $offset);
-//		var_dump($result);die;
-//		$collection = new ArrayCollection($result);
-//		var_dump($collection);die;
-//		foreach ($result as $entity)
-//		{
-//			$entity->getCompanies();
-//		}
-		return $result;
+		$companies = $data['companies'];
+		if (!is_array($companies)) {
+			$companies = array();
+		}
+		unset($data['companies']);
+		
+		parent::_fillEntity($entity, $data);
+		
+		/** @var Doctrine\Common\Collections\ArrayCollection */
+		$current_companies = $entity->getCompanies();
+		$current_company_ids = array();
+		foreach ($current_companies as $company) {
+			$_company_id = $company->getId();
+			if (!in_array($_company_id, $companies)) {
+				$current_companies->remove($company->getId());
+			} else {
+				$current_company_ids[] = $_company_id;
+			}
+		}
+		foreach ($companies as $company_id) {
+			$company = $this->getObjectManager()->find('Budget\Entity\Company', $company_id);
+			if ($company && !in_array($company_id, $current_company_ids)) {
+				$entity->getCompanies()->add($company);
+			}
+		}
 	}
 }

@@ -4,7 +4,7 @@ namespace Budget\Service;
 
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
-use DoctrineORMModule\Service\EntityManagerFactory;
+use Doctrine\Common\Collections\ArrayCollection;
 //use Doctrine\ORM\EntityManager;
 
 abstract class AbstractBudgetService 
@@ -25,7 +25,7 @@ abstract class AbstractBudgetService
 	/**
 	 * @var Doctrine\Common\Persistence\ObjectManager
 	 */
-	protected static $_object_manager = null;
+	private static $_object_manager = null;
 
 	public function __construct() {
 //		var_dump(self::$entity_manager); die;
@@ -87,9 +87,14 @@ abstract class AbstractBudgetService
 	public function findAll($return_entities = true, $json = false, array $criteria = array(), array $orderBy = null, $limit = null, $offset = null)
 	{
 		$result = $this->getRepository()->findBy($criteria, $orderBy, $limit, $offset);
+//		var_dump($result);die;
 		if (!$return_entities)
 		{
-			$result = $this->_entityToStdClass($result);
+			if (is_object($result[0]))
+			{
+				$result = $this->_entityToStdClass($result);
+			}
+			
 			if ($json)
 			{
 				$result = \Zend\Json\Json::encode($result);
@@ -124,6 +129,11 @@ abstract class AbstractBudgetService
 		$this->getObjectManager()->flush();
 	}
 	
+	/**
+	 * 
+	 * @param type $entity
+	 * @param array $data
+	 */
 	protected function _fillEntity($entity, array $data)
 	{
 		$reflector = new \ReflectionClass($entity);
@@ -140,8 +150,19 @@ abstract class AbstractBudgetService
 			$property->setAccessible(false);
 			if (isset($data[$name]))
 			{
-				$method = "set" .  implode('', array_map('ucfirst', explode('_', $name)));
-				$entity->$method($data[$name]);
+				$_base_method_name = implode('', array_map('ucfirst', explode('_', $name)));
+				$get_method = "get" . $_base_method_name;
+				$prop = $entity->$get_method();
+				
+				if ($prop instanceof ArrayCollection)
+				{
+					foreach ($data[$name] as $value) {
+						$prop->add($value);
+					}
+				} else {
+					$set_method = "set" . $_base_method_name;
+					$entity->$set_method($data[$name]);
+				}
 			}
 		}
 	}
@@ -162,7 +183,25 @@ abstract class AbstractBudgetService
 				$property->setAccessible(true);
 				$value = $property->getValue($entity);
 				$name = $property->getName();
+				
+				$method_name = 'get' . implode('', array_map('ucfirst', explode('_', $name)));
+				
+				$prop_obj = null;
+				if (method_exists($entity, $method_name))
+				{
+					$prop_obj = $entity->$method_name();
+					
+				}
+				if (is_object($prop_obj) && 
+					get_class($prop_obj) === 'Doctrine\ORM\PersistentCollection')
+				{
+					$value = array();
+					foreach ($prop_obj as $val){
+						$value[] = $val;
+					}
+				}
 				$obj->$name = $value;
+					
 				$property->setAccessible(false);
 			}
 			$arr[] = $obj;

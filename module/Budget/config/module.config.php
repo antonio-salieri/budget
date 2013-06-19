@@ -38,6 +38,8 @@ return array(
 		'invokables' => array(
 			'budget.service.company' => 'Budget\Service\CompanyService',
 			'budget.service.user' => 'Budget\Service\UserService',
+			'budget.service.transactiontype' => 'Budget\Service\TransactiontypeService',
+			'budget.service.transaction' => 'Budget\Service\TransactionService'
 //			'doctrine.common.persistance.object_manager' => 'Doctrine\Common\Persistence\ObjectManager',
 		),
     ),
@@ -56,7 +58,9 @@ return array(
             'Budget\Controller\Index' => 'Budget\Controller\IndexController',
             'Budget\Controller\Company' => 'Budget\Controller\CompanyController',
             'company' => 'Budget\Controller\CompanyController',
-            'user' => 'Budget\Controller\UserController'
+            'user' => 'Budget\Controller\UserController',
+            'transactiontype' => 'Budget\Controller\TransactiontypeController',
+            'transaction' => 'Budget\Controller\TransactionController'
         ),
     ),
     'view_manager' => array(

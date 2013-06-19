@@ -1,45 +1,41 @@
-Ext.define('Budget.controller.User', {
+Ext.define('Budget.controller.Accttype', {
     extend: 'Ext.app.Controller',
 
-	stores: ['Users'],
-	models: ['User'],
+	stores: ['Accttypes'],
+	models: ['Accttype'],
 	views: [
-        'admin.user.List',
-        'admin.user.Edit'
+        'admin.acct_type.List',
+        'admin.acct_type.Edit'
     ],
 	
     init: function() {
         this.control({
-//            'viewport > panel': {
-//                render: this.onPanelRendered
-//            }
-			'userlist': {
+			'accttypelist': {
 				itemdblclick: this.showEditRecordForm
 			},
 			
-			'userlist toolbar button[action=add]': {
+			'accttypelist toolbar button[action=add]': {
 				click: this.showAddRecordForm
 			},
 			
-			'useredit button[action=add]': {
+			'accttypeedit button[action=add]': {
 				click: this.addRecord
 			},
 			
-			'useredit button[action=edit]': {
+			'accttypeedit button[action=edit]': {
 				click: this.updateRecord
 			}
-			
         });
     },	
 	
 	showEditRecordForm: function(grid, record) {
-		var view = Ext.widget('useredit', {action: 'edit'});
+		var view = Ext.widget('accttypeedit', {action: 'edit'});
 		view.down('form')
 			.loadRecord(record);
 	},
 	
 	showAddRecordForm: function() {
-		var view = Ext.widget('useredit', {action: 'add'});
+		var view = Ext.widget('accttypeedit', {action: 'add'});
 		return view;
 	},
 	
@@ -52,9 +48,9 @@ Ext.define('Budget.controller.User', {
 
 		record.set(values);
 		win.close();
-		this.getUsersStore().sync({
+		this.getAccttypesStore().sync({
 			callback: function() {
-				this.getUsersStore().reload();
+				this.getAccttypesStore().reload();
 			},
 			scope: this
 		});
@@ -63,7 +59,7 @@ Ext.define('Budget.controller.User', {
 	addRecord: function(button) {
 		var win = button.up('window'),
 			form = win.down('form'),
-			store = this.getUsersStore(),
+			store = this.getAccttypesStore(),
 			values = form.getValues();
 		
 		if (form.isValid())

@@ -17,14 +17,7 @@ Ext.define('Budget.view.abstract.List' ,{
 			items : ["-"]
 		};
 		
-		this.buttons = {
-			xtype: "toolbar",
-			items : ["->", {
-				text: "Add",
-//				iconCls: "default-icon",
-				action: "add"
-			}]
-		};
+		this.buttons = this.getButtons();
 		
 		this.renderIs11 = function(val) {
 			return (val == 1) ? 'yes':'no';
@@ -62,5 +55,16 @@ Ext.define('Budget.view.abstract.List' ,{
 		}
 		
         this.callParent(arguments);
-    }
+    },
+	
+	getButtons: function() {
+		return {
+			xtype: "toolbar",
+			items : ["->", {
+				text: "Add",
+//				iconCls: "default-icon",
+				action: "add"
+			}]
+		};
+	}
 });

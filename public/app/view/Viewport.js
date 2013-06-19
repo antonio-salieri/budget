@@ -5,13 +5,9 @@ Ext.define('Budget.view.Viewport', {
 		'Budget.view.BudgetMenu',
 		'Budget.view.BudgetWorkPanel',
 		'Budget.view.admin.Admin',
+//		'Budget.view.conto.List',
 		'Budget.view.Conto',
 		'Ext.ux.statusbar'
-//        'Budget.view.NewStation',
-//        'Budget.view.SongControls',
-//        'Budget.view.StationsList',
-//        'Budget.view.RecentlyPlayedScroller',
-//        'Budget.view.SongInfo'
     ],
 	layout: {
 		type: 'border',
