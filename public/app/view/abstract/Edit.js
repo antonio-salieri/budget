@@ -12,26 +12,29 @@ Ext.define('Budget.view.abstract.Edit' ,{
 	
     initComponent: function() {
 
-		var action, caption;
-		if (this.action == 'edit')
-		{
-			action = 'edit';
-			caption = 'Save';
-			this.title = this.editTitle;
-		} else {
-			action = 'add';
-			caption = 'Add';
-			this.title = this.addTitle;
+		
+		if (!this.buttons) {
+			var action, caption;
+			if (this.action == 'edit')
+			{
+				action = 'edit';
+				caption = 'Save';
+				this.title = this.editTitle;
+			} else {
+				action = 'add';
+				caption = 'Add';
+				this.title = this.addTitle;
+			}
+			
+			this.buttons = [{
+				text: caption,
+				action: action
+			}, {
+				text: 'Cancel',
+				scope: this,
+				handler: this.close
+			}];
 		}
-
-		this.buttons = [{
-			text: caption,
-			action: action
-		}, {
-			text: 'Cancel',
-			scope: this,
-			handler: this.close
-		}];
 
 		this.callParent(arguments);
 	}

@@ -1,4 +1,12 @@
 Ext.define('Budget.model.Conto', {
     extend: 'Ext.data.Model',
-    fields: ['id','income','outcome','entryTime','updateTime','is11','type','note','user','company']
+	
+	requires:[
+        'Budget.model.Accttype'
+    ],
+	
+    fields: ['id','income','outcome','entryTime','updateTime','executionDate','is11','type','note','user','company'],
+	associations: [
+        {type: 'hasOne', model: 'Budget.model.Accttype', name: 'type',associationKey: 'id', foreignKey: 'type'}
+    ]
 });

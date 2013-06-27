@@ -36,7 +36,7 @@ class UserService extends AbstractBudgetService
 		foreach ($current_companies as $company) {
 			$_company_id = $company->getId();
 			if (!in_array($_company_id, $companies)) {
-				$current_companies->remove($company->getId());
+				$current_companies->remove($_company_id);
 			} else {
 				$current_company_ids[] = $_company_id;
 			}

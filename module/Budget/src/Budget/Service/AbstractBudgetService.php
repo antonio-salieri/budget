@@ -5,6 +5,8 @@ namespace Budget\Service;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Tools\Pagination\Paginator;
+
 //use Doctrine\ORM\EntityManager;
 
 abstract class AbstractBudgetService 
@@ -87,7 +89,7 @@ abstract class AbstractBudgetService
 	public function findAll($return_entities = true, $json = false, array $criteria = array(), array $orderBy = null, $limit = null, $offset = null)
 	{
 		$result = $this->getRepository()->findBy($criteria, $orderBy, $limit, $offset);
-//		var_dump($result);die;
+		
 		if (!$return_entities)
 		{
 			if (is_object($result[0]))
@@ -103,6 +105,12 @@ abstract class AbstractBudgetService
 		return $result;
 	}
 	
+	public function getTotalCount(array $criteria = array())
+	{
+		$this->getRepository()->getTotalCount($criteria);
+	}
+
+
 	public function update(array $data)
 	{
 		if (!isset($data['id']))

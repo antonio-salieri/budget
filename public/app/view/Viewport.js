@@ -5,7 +5,6 @@ Ext.define('Budget.view.Viewport', {
 		'Budget.view.BudgetMenu',
 		'Budget.view.BudgetWorkPanel',
 		'Budget.view.admin.Admin',
-//		'Budget.view.conto.List',
 		'Budget.view.Conto',
 		'Ext.ux.statusbar'
     ],

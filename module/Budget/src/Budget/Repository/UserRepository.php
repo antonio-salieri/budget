@@ -8,18 +8,31 @@ use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\ORM\Query;
 
 
-class UserRepository extends EntityRepository
+class UserRepository extends AbstractRepository
 {
 //    public function findAll(array $criteria, array $orderBy = null, $limit = null, $offset = null)
     public function findBy(array $criteria = array(), array $orderBy = null, $limit = null, $offset = null)
 	{
 		
 		$qb = $this->_em->createQueryBuilder();
-		$qb	->select('u user, c.id company')
+		$qb	->select('u, c')
 			->from('Budget\Entity\User', 'u')
-			->leftJoin('u.companies', 'c');
+			->leftJoin('u.companies', 'c')
+			->where($criteria)
+			->setFirstResult($offset)
+			->setMaxResults($limit);
+
 		
-		$users_raw = $qb->getQuery()->getResult(Query::HYDRATE_ARRAY);
+//		$dql = "SELECT u, c FROM Budget\Entity\User u LEFT JOIN u.companies c";
+//		$query = $this->_em->createQuery($dql);
+		
+		foreach ($query->getResult() as $user)
+		{
+			print_r($user);
+			die;
+		}
+		
+		$users_raw = $qb->getQuery()->getResult();
 		
 		$users = array();
 		foreach ($users_raw as $user_data)

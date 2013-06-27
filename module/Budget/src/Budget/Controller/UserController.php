@@ -20,11 +20,15 @@ class UserController extends AbstractActionController
 		$start = $this->getRequest()->getQuery('start', 0);
 		$page_no = $this->getRequest()->getQuery('page', 1);
 		$limit = $this->getRequest()->getQuery('limit', 25);
+		$offset = $limit * ($page_no - 1);
+		$criteria = array();
+		$order_by = array();
 		
 		try {
 			/** @var Budget\Service\UserService */
 			$service = $this->getServiceLocator()->get('budget.service.user');
-			$result = $service->findAll(false, false);
+			$result = $service->findAll(false, false, $criteria, $order_by, $limit, $offset);
+			
 //$result = array('id'=>1, 'firstName'=>'Petar', 'lastName'=>'Petrović', 'companies'=>array(1,2));
 //			var_dump($result);die;
 		} catch (\Exception $e) {

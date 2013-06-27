@@ -5,7 +5,8 @@ Ext.define('Budget.controller.Conto', {
 	models: ['Conto'],
 	views: [
         'conto.List',
-        'conto.Edit'
+        'conto.Edit',
+        'conto.View'
     ],
 	
     init: function() {
@@ -52,11 +53,9 @@ Ext.define('Budget.controller.Conto', {
 	},
 	
 	showItemDetails: function(grid, record) {
-		var view = Ext.widget('contoedit', {action: 'view'});
-		view.down('form').applyToField({disabled:true});
-		view.down('form').loadRecord(record);
+		var view = Ext.widget('contoview');
+		view.down('panel').update(record.getData());
 	},
-	
 	
 	addRecord: function(button) {
 		var win = button.up('window'),

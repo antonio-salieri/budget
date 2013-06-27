@@ -28,11 +28,16 @@ class CompanyController extends AbstractActionController
 		$start = $this->getRequest()->getQuery('start', 0);
 		$page_no = $this->getRequest()->getQuery('page', 1);
 		$limit = $this->getRequest()->getQuery('limit', 25);
+		$offset = $limit * ($page_no - 1);
+		$criteria = array();
+		$order_by = array();
 		
 		try {
 			/** @var Budget\Service\Company */
 			$service = $this->getServiceLocator()->get('budget.service.company');
-			$result = $service->findAll(false);
+			$result = $service->findAll(false, false, $criteria, $order_by, $limit, $offset);
+			$total = $service->getTotalCount($criteria);
+			
 		} catch (\Exception $e) {
 			return new JsonModel(array(
 				'success' => false,
@@ -43,7 +48,8 @@ class CompanyController extends AbstractActionController
 		
 		return new JsonModel(array(
 			'success' => true,
-			'result' => $result
+			'result' => $result,
+			'total' => $total
 		));
     }
 	
