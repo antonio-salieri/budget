@@ -2,7 +2,7 @@
  * Not used yet
  */
 
-Ext.define('Budget.controller.abstract.Entity', {
+Ext.define('Budget.controller.abstract.Controller', {
     extend: 'Ext.app.Controller',
 
 	stores: [],

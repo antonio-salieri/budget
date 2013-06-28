@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="transaction")
  * @ORM\Entity(repositoryClass="Budget\Repository\TransactionRepository")
  */
-class Transaction
+class Transaction implements BudgetEntityInterface
 {
     /**
      * @var integer

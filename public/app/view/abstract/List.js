@@ -19,10 +19,6 @@ Ext.define('Budget.view.abstract.List' ,{
 		
 		this.buttons = this.getButtons();
 		
-		this.renderIs11 = function(val) {
-			return (val == 1) ? 'yes':'no';
-		};
-		
 		if (this.placeDeleteColumn)
 		{
 			var delete_column = {
@@ -56,6 +52,28 @@ Ext.define('Budget.view.abstract.List' ,{
 		
         this.callParent(arguments);
     },
+
+	renderBoolean: function(val) {
+		return (val == 1) ? 'yes':'no';
+	},
+		
+	renderDateTime: function(date_obj) {
+		var dt = new Date(date_obj.date);
+		return Ext.Date.format(dt, 'd. m. Y. H:i:s');
+	},
+
+	renderDate: function(date_obj) {
+		var dt = new Date(date_obj.date);
+		return Ext.Date.format(dt, 'd. m. Y.');
+	},
+	
+	renderName: function(val_obj) {
+		if (val_obj.name) {
+			return val_obj.name;
+		} else {
+			return val_obj.firstName+' '+val_obj.lastName;
+		}
+	},
 	
 	getButtons: function() {
 		return {

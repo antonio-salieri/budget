@@ -8,9 +8,9 @@ use Doctrine\ORM\Mapping as ORM;
  * TransactionType
  *
  * @ORM\Table(name="transaction_type")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Budget\Repository\TransactiontypeRepository")
  */
-class TransactionType
+class TransactionType  implements BudgetEntityInterface
 {
 	const INCOME_TYPE = 0;
 	const OUTCOME_TYPE = 1;

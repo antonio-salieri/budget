@@ -8,9 +8,9 @@ use Doctrine\ORM\Mapping as ORM;
  * Company
  *
  * @ORM\Table(name="company")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Budget\Repository\CompanyRepository")
  */
-class Company
+class Company implements BudgetEntityInterface
 {
     /**
      * @var integer
@@ -38,7 +38,7 @@ class Company
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\ManyToMany(targetEntity="Budget\Entity\TransactionType", inversedBy="company")
+     * @ORM\ManyToMany(targetEntity="Budget\Entity\User", inversedBy="company")
      * @ORM\JoinTable(name="link_user_company",
      *   joinColumns={
      *     @ORM\JoinColumn(name="company_id", referencedColumnName="id")
@@ -48,7 +48,7 @@ class Company
      *   }
      * )
      */
-    private $user;
+//    private $user;
 
     /**
      * Constructor

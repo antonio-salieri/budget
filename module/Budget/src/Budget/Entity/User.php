@@ -12,7 +12,7 @@ use Doctrine\ORM\EntityRepository;
  * @ORM\Table(name="user")
  * @ORM\Entity(repositoryClass="Budget\Repository\UserRepository")
  */
-class User
+class User implements BudgetEntityInterface
 {
     /**
      * @var integer

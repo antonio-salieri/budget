@@ -30,24 +30,47 @@ Ext.define('Budget.view.conto.List' ,{
 			header: 'Entry Time',  
 			dataIndex: 'entryTime',  
 			flex: 1, 
-			hideable: true
+			hideable: true,
+			renderer: this.renderDateTime
 		}, {
 			header: 'Update Time',  
 			dataIndex: 'updateTime',  
 			flex: 1, 
 			hideable: true,
-			hidden: true
+			hidden: true,
+			renderer: this.renderDateTime
+		}, {
+			header: 'Execution Date',  
+			dataIndex: 'executionDate',  
+			flex: 1, 
+			hideable: true,
+			hidden: true,
+			renderer: this.renderDate
 		}, {
 			header: 'Is 1:1',  
 			dataIndex: 'is11',  
 			flex: 1, 
 			hideable: true,
-			hidden: true
+			hidden: true,
+			renderer: this.renderBoolean
 		}, {
 			header: 'Type',  
-			dataIndex: 'type',  
+			dataIndex: 'type',
 			flex: 1, 
-			hideable: true
+			hideable: true,
+			renderer: this.renderName
+		}, {
+			header: 'User',  
+			dataIndex: 'user',
+			flex: 1, 
+			hideable: true,
+			renderer: this.renderName
+		}, {
+			header: 'Company',  
+			dataIndex: 'company',
+			flex: 1, 
+			hideable: true,
+			renderer: this.renderName
 		}, {
 			header: 'Note',  
 			dataIndex: 'note',  
@@ -81,7 +104,7 @@ Ext.define('Budget.view.conto.List' ,{
 			}, {
 				text: "Add outcome",
 				iconCls: "delete-icon",
-				action: "add_income"
+				action: "add_outcome"
 			}]
 		};
 	}

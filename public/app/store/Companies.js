@@ -1,8 +1,6 @@
 Ext.define('Budget.store.Companies', {
-    extend: 'Ext.data.Store',
+    extend: 'Budget.store.abstract.Store',
     model: 'Budget.model.Company',
-	
-	autoLoad: true,
 	
 	proxy: {
 		type: 'ajax',

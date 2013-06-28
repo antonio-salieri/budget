@@ -5,8 +5,9 @@ Ext.define('Budget.controller.Conto', {
 	models: ['Conto'],
 	views: [
         'conto.List',
-        'conto.Edit',
-        'conto.View'
+        'conto.Add',
+        'conto.View',
+        'conto.Filter'
     ],
 	
     init: function() {
@@ -15,42 +16,30 @@ Ext.define('Budget.controller.Conto', {
 				itemdblclick: this.showItemDetails
 			},
 			
-			'contolist toolbar button[action=add]': {
-				click: this.showAddRecordForm
+			'contolist toolbar button[action=add_income]': {
+				click: this.showAddIncomeForm
 			},
 			
-			'contoedit button[action=add]': {
+			'contolist toolbar button[action=add_outcome]': {
+				click: this.showAddOutcomeForm
+			},
+			
+			'contoadd button[action=add]': {
 				click: this.addRecord
 			}
         });
     },	
 	
-	showEditRecordForm: function(grid, record) {
-		var view = Ext.widget('contoedit', {action: 'edit'});
-		view.down('form').loadRecord(record);
-	},
-	
-	showAddRecordForm: function() {
-		var view = Ext.widget('contoedit', {action: 'add'});
+	showAddIncomeForm: function() {
+		var view = Ext.widget('contoadd', {action: 'income'});
 		return view;
 	},
 	
-	updateRecord: function(button) {
-		var win = button.up('window'),
-			form = win.down('form'),
-			record = form.getRecord(),
-			values = form.getValues(),
-			action = button.action;
-
-		record.set(values);
-		win.close();
-		this.getContosStore().sync({
-			callback: function() {
-				this.getContosStore().reload();
-			},
-			scope: this
-		});
+	showAddOutcomeForm: function() {
+		var view = Ext.widget('contoadd', {action: 'outcome'});
+		return view;
 	},
+	
 	
 	showItemDetails: function(grid, record) {
 		var view = Ext.widget('contoview');
@@ -63,11 +52,17 @@ Ext.define('Budget.controller.Conto', {
 			store = this.getContosStore(),
 			values = form.getValues();
 		
+		values.is11 = false;
+		values.updateTime = null;
+		values.entryTime = Ext.util.Format.date(new Date(), 'Y-m-d H:i:s');
+		values.income = parseFloat(values.income);
+		values.outcome = parseFloat(values.outcome);
+		
 		if (form.isValid())
 		{
 			win.close();
 			store.add(values);
-			store.sync();
+			store.synchronize();
 		}
 	}
 });

@@ -1,8 +1,6 @@
 Ext.define('Budget.store.Accttypes', {
-    extend: 'Ext.data.Store',
+    extend: 'Budget.store.abstract.Store',
     model: 'Budget.model.Accttype',
-	
-	autoLoad: true,
 	
 	proxy: {
 		type: 'ajax',

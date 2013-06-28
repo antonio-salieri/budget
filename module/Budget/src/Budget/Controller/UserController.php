@@ -1,36 +1,23 @@
 <?php
 namespace Budget\Controller;
 
-use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Zend\View\Model\JsonModel;
 
 // use Zend\View\Model\JsonModel;
 
-class UserController extends AbstractActionController
+class UserController extends AbstractBudgetController
 {
-//	private $acceptCriteria = array(
-//		'Zend\View\Model\ViewModel' => array('text/html'),
-//		'Zend\View\Model\JsonModel' => array('application/json'),
-//		'Zend\View\Model\FeedModel' => array('application/rss+xml')
-//	);
 	
     public function indexAction()
     {
-		$start = $this->getRequest()->getQuery('start', 0);
-		$page_no = $this->getRequest()->getQuery('page', 1);
-		$limit = $this->getRequest()->getQuery('limit', 25);
-		$offset = $limit * ($page_no - 1);
-		$criteria = array();
-		$order_by = array();
+		parent::indexAction();
 		
 		try {
 			/** @var Budget\Service\UserService */
 			$service = $this->getServiceLocator()->get('budget.service.user');
-			$result = $service->findAll(false, false, $criteria, $order_by, $limit, $offset);
+			$result = $service->findBy($this->criteria, $this->order_by, $this->limit, $this->offset);
 			
-//$result = array('id'=>1, 'firstName'=>'Petar', 'lastName'=>'Petrović', 'companies'=>array(1,2));
-//			var_dump($result);die;
 		} catch (\Exception $e) {
 			return new JsonModel(array(
 				'success' => false,
@@ -41,7 +28,8 @@ class UserController extends AbstractActionController
 		
 		return new JsonModel(array(
 			'success' => true,
-			'result' => $result
+			'result' => $result['result'],
+			'total' => $result['total']
 		));
     }
 	
@@ -58,14 +46,12 @@ class UserController extends AbstractActionController
 			return new JsonModel(array(
 				'success' => false,
 				'msg' => $e->getMessage()
-//				'msg' => $this->translate($e->getMessage())
 			));
 		}
 		
 		return new JsonModel(array(
 			'success' => true,
 			'msg' => 'Update succeeded'
-//			'msg' => $this->translate('Uspešan update')
 		));
 	}
 	

@@ -15,41 +15,29 @@ use Zend\View\Model\JsonModel;
 
 // use Zend\View\Model\JsonModel;
 
-class CompanyController extends AbstractActionController
+class CompanyController extends AbstractBudgetController
 {
-//	private $acceptCriteria = array(
-//		'Zend\View\Model\ViewModel' => array('text/html'),
-//		'Zend\View\Model\JsonModel' => array('application/json'),
-//		'Zend\View\Model\FeedModel' => array('application/rss+xml')
-//	);
 	
     public function indexAction()
     {
-		$start = $this->getRequest()->getQuery('start', 0);
-		$page_no = $this->getRequest()->getQuery('page', 1);
-		$limit = $this->getRequest()->getQuery('limit', 25);
-		$offset = $limit * ($page_no - 1);
-		$criteria = array();
-		$order_by = array();
 		
 		try {
-			/** @var Budget\Service\Company */
+			/** @var Budget\Service\CompanyService */
 			$service = $this->getServiceLocator()->get('budget.service.company');
-			$result = $service->findAll(false, false, $criteria, $order_by, $limit, $offset);
-			$total = $service->getTotalCount($criteria);
+			$result = $service->findBy($this->criteria, $this->order_by, $this->limit, $this->offset);
 			
 		} catch (\Exception $e) {
 			return new JsonModel(array(
 				'success' => false,
-				'msg' => $this->translate($e->getMessage()),
+				'msg' => $e->getMessage(),
 				'result' => array()
 			));
 		}
 		
 		return new JsonModel(array(
 			'success' => true,
-			'result' => $result,
-			'total' => $total
+			'result' => $result['result'],
+			'total' => $result['total']
 		));
     }
 	

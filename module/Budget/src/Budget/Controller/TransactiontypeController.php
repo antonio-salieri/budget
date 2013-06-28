@@ -7,19 +7,15 @@ use Zend\View\Model\JsonModel;
 
 // use Zend\View\Model\JsonModel;
 
-class TransactiontypeController extends AbstractActionController
+class TransactiontypeController extends AbstractBudgetController
 {
 	
     public function indexAction()
     {
-		$start = $this->getRequest()->getQuery('start', 0);
-		$page_no = $this->getRequest()->getQuery('page', 1);
-		$limit = $this->getRequest()->getQuery('limit', 25);
-		
 		try {
-			/** @var Budget\Service\ */
+			/** @var Budget\Service\Transactiontype */
 			$service = $this->getServiceLocator()->get('budget.service.transactiontype');
-			$result = $service->findAll(false, false);
+			$result = $service->findBy($this->criteria, $this->order_by, $this->limit, $this->offset);
 		} catch (\Exception $e) {
 			return new JsonModel(array(
 				'success' => false,
@@ -30,7 +26,8 @@ class TransactiontypeController extends AbstractActionController
 		
 		return new JsonModel(array(
 			'success' => true,
-			'result' => $result
+			'result' => $result['result'],
+			'total' => $result['total']
 		));
     }
 	

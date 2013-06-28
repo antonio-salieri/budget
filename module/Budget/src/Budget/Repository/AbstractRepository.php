@@ -8,8 +8,19 @@ use Doctrine\ORM\Query;
 
 abstract class AbstractRepository extends EntityRepository
 {
-	public function getTotalCount(array $criteria = array())
+	
+	/**
+	 * 
+	 * @param array $conditions
+	 * @return string
+	 */
+	protected function _getWherePart(array $conditions)
 	{
-		
+		$where = '1=1';
+		foreach ($conditions as $condition)
+		{
+			
+		}
+		return $where;
 	}
 }

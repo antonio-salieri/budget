@@ -25,12 +25,11 @@ Ext.define('Budget.view.Conto' ,{
 			split: true,
 			floatable : true,
 			collapsed:true,
-			xtype: 'panel',
+			xtype: 'contofilterform',
 			title: 'Filter',
 			collapsible : true,
-			html: 'Filters',
-			region: 'north',
-			height: 50
+//			html: 'Filters',
+			region: 'north'
 		}];
 	
 		this.callParent(arguments);

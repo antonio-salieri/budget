@@ -2,96 +2,33 @@
 
 namespace Budget\Repository;
 
-use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\Query\ResultSetMapping;
-//use Doctrine\ORM\Query\Expr\Join;
-use Doctrine\ORM\Query;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 
 class UserRepository extends AbstractRepository
 {
-//    public function findAll(array $criteria, array $orderBy = null, $limit = null, $offset = null)
     public function findBy(array $criteria = array(), array $orderBy = null, $limit = null, $offset = null)
 	{
 		
+		$order_property = (isset($orderBy['property'])) ? $orderBy['property'] : 'main.id';
+		$order_direction = (isset($orderBy['direction']) && $orderBy['direction'] == 'DESC') ? 'DESC' : 'ASC';
+		
 		$qb = $this->_em->createQueryBuilder();
-		$qb	->select('u, c')
-			->from('Budget\Entity\User', 'u')
-			->leftJoin('u.companies', 'c')
-			->where($criteria)
+		$qb	->select('main, c')
+			->from('Budget\Entity\User', 'main')
+			->leftJoin('main.companies', 'c')
+			->where($this->_getWherePart($criteria))
+			->orderBy($order_property, $order_direction)
 			->setFirstResult($offset)
 			->setMaxResults($limit);
 
+		$query = $qb->getQuery();
 		
-//		$dql = "SELECT u, c FROM Budget\Entity\User u LEFT JOIN u.companies c";
-//		$query = $this->_em->createQuery($dql);
+		$paginator = new Paginator($query, $fetchJoinCollection = true);
 		
-		foreach ($query->getResult() as $user)
-		{
-			print_r($user);
-			die;
-		}
-		
-		$users_raw = $qb->getQuery()->getResult();
-		
-		$users = array();
-		foreach ($users_raw as $user_data)
-		{
-			$user_id = $user_data['user']['id'];
-			
-			if (!isset($users[$user_id])) {
-				$users[$user_id] = $user_data['user'];
-			}
-			
-			if (!isset($users[$user_id]['companies'])) {
-				$users[$user_id]['companies'] = array();
-			}	
-			$users[$user_id]['companies'][] = $user_data['company'];
-		}
-		// Repack resulting array to start from index 0 this is doen for json_encode :(
-		$result = array();
-		foreach ($users as $user) {
-			$result[] = $user;
-		}
-		return $result;
-		
-		/*
-		 * TEST CODE FOLLOWS
-		 */
-//		$qb = $this->_em->createQueryBuilder();
-//		$qb	->add('select', 'u, c.id')
-//			->add('from', 'User u')
-//				// $qb->expr()->andx($qb->expr()->eq('p.user_id', 'u.id'), $qb->expr()->eq('p.country_code', '55'))
-//			->add('leftJoin', 'u.Companies c')
-//			->add('where', $qb->expr()->andX($criteria))
-//			->add('orderBy', $qb->expr()->orderBy($orderBy))
-//			->setFirstResult($offset)
-//			->setMaxResults($limit);
-//		$query = $this->_em->createQuery("
-//			SELECT u, c
-//			FROM Budget\Entity\User u 
-//			LEFT JOIN u.companies c");
-//			$users = $query->getResult(Query::HYDRATE_OBJECT);
-			
-//			$rsm = new ResultSetMapping();
-//			$query = $this->_em->createNativeQuery('
-//				SELECT u.*, luc.company_id 
-//				FROM user u 
-//				LEFT JOIN link_user_company luc 
-//					ON luc.user_id = u.id', $rsm
-//			);
-//			
-//			$users = $query->getResult();
-//			var_dump($rsm);die;
-//			var_dump($users);die;
-//			
-//			foreach ($users as $user)
-//			{
-////				var_dump($user['companies']->getValues());die;
-////				var_dump($user);die;
-//				$user->getCompanies();
-//			}
-//			var_dump($users);die;
-//			return $users;
+		return array(
+			'result' => $paginator,
+			'total' => $paginator->count()
+		);
 	}
 }

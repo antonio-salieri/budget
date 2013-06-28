@@ -15,21 +15,62 @@ Ext.define('Budget.view.conto.View' ,{
 			handler: this.close
 		}];
 	
+		var tpl = new Ext.XTemplate(
+			'<tpl for=".">',
+			'<table>',
+			'	<tr>',
+			'		<td style="font-weight:bold">Type: </td> <td style="float:right;padding: 1px">{type.name} </td>',
+			'	</tr>',
+			'	<tr>',
+			'		<td style="font-weight:bold">Income: </td> <td style="float:right;padding: 1px">{[this.renderValue(values.income)]} </td>',
+			'	</tr>',
+			'	<tr>',
+			'		<td style="font-weight:bold">Outcome: </td> <td style="float:right;padding: 1px">{[this.renderValue(values.outcome)]} </td>',
+			'	</tr>',
+			'	<tr>',
+			'		<td style="font-weight:bold">User: </td> <td style="float:right;padding: 1px">{[this.getUserFullName(values.user)]} </td>',
+			'	</tr>',
+			'	<tr>',
+			'		<td style="font-weight:bold">Company: </td> <td style="float:right;padding: 1px">{company.name} </td>',
+			'	</tr>',
+			'	<tr>',
+			'		<td style="font-weight:bold">Entry time: </td> <td style="float:right;padding: 1px">{[this.renderDateTime(values.entryTime)]} </td>',
+			'	</tr>',
+			'	<tr>',
+			'		<td style="font-weight:bold">Execution date: </td> <td style="float:right;padding: 1px">{[this.renderDate(values.executionDate)]} </td>',
+			'	</tr>',
+			'	<tr>',
+			'		<td style="font-weight:bold;vertical-align: top;">Note: </td> <td style="float:right;padding: 1px">{[this.renderNote(values.note)]} </td>',
+			'	</tr>',
+			'</table>',
+			'</tpl>',
+			{
+				disableFormats: true,
+				getUserFullName: function(user) {
+					return user.firstName+" "+user.lastName;
+				},
+				renderDate: function(date_obj) {
+					var dt = new Date(date_obj.date);
+					return Ext.Date.format(dt, 'd. m. Y.');
+				},
+				renderDateTime: function(datetime_obj) {
+					var dt = new Date(datetime_obj.date);
+					return Ext.Date.format(dt, 'd. m. Y. H:i:s');
+				},
+				renderValue: function(value) {
+					return (value) ? value : '-';
+				},
+				renderNote: function(note) {
+					return Ext.util.Format.nl2br(note);
+				}
+			}
+		);
         this.items = [{
 			xtype: 'panel',
-			frame: true,
+			frame: false,
 			bodyPadding: 7,
 			
-			tpl: [
-				'<span style="font-weight:bold">Type: </span> <span style="float:right">{type} </span><br/>',
-				'<span style="font-weight:bold">Income: </span> <span style="float:right">{income} </span><br/>',
-				'<span style="font-weight:bold">Outcome: </span> <span style="float:right">{outcome} </span><br/>',
-				'<span style="font-weight:bold">User: </span> <span style="float:right">{user} </span><br/>',
-				'<span style="font-weight:bold">Company: </span> <span style="float:right">{company} </span><br/>',
-				'<span style="font-weight:bold">Entry time: </span> <span style="float:right">{entryTime} </span><br/>',
-				'<span style="font-weight:bold">Execution date: </span> <span style="float:right">{executionDate} </span><br/>',
-				'<span style="font-weight:bold">Note: </span> <span style="float:right">{note} </span><br/>'
-			]
+			tpl: tpl
 		}];
 
 		this.callParent(arguments);

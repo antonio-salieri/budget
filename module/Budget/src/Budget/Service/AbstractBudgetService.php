@@ -5,7 +5,9 @@ namespace Budget\Service;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\PersistentCollection;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use Budget\Entity\BudgetEntityInterface;
 
 //use Doctrine\ORM\EntityManager;
 
@@ -25,17 +27,17 @@ abstract class AbstractBudgetService
 	protected $_entity_name = null;
 	
 	/**
+	 * @var array
+	 */
+	protected $_entity_relations = array();
+
+
+	/**
 	 * @var Doctrine\Common\Persistence\ObjectManager
 	 */
 	private static $_object_manager = null;
 
 	public function __construct() {
-//		var_dump(self::$entity_manager); die;
-//		if (self::$entity_manager === null)
-//		{
-//			$facttory = new EntityManagerFactory('orm_default');
-//			static::$entity_manager = $facttory->createService('');
-//		}
 	}
 
 
@@ -78,37 +80,41 @@ abstract class AbstractBudgetService
 	
 	/**
 	 * 
-	 * @param bool $return_entities
-	 * @param bool $json
 	 * @param array $criteria
 	 * @param string $orderBy
 	 * @param int $limit
 	 * @param int $offset
 	 * @return array
 	 */
-	public function findAll($return_entities = true, $json = false, array $criteria = array(), array $orderBy = null, $limit = null, $offset = null)
+	public function findBy(array $criteria = array(), array $orderBy = null, $limit = null, $offset = null)
 	{
-		$result = $this->getRepository()->findBy($criteria, $orderBy, $limit, $offset);
+		$data = $this->getRepository()->findBy($criteria, $orderBy, $limit, $offset);
 		
-		if (!$return_entities)
+		$total = $data['total'];
+		
+		$items = array();
+		foreach ($data['result'] as $item)
 		{
-			if (is_object($result[0]))
-			{
-				$result = $this->_entityToStdClass($result);
-			}
-			
-			if ($json)
-			{
-				$result = \Zend\Json\Json::encode($result);
-			}
+			$items[] = $this->_entityToStdClass($item);
 		}
-		return $result;
+		
+		return array(
+			'total' => $total,
+			'result' => $items
+		);
 	}
 	
-	public function getTotalCount(array $criteria = array())
-	{
-		$this->getRepository()->getTotalCount($criteria);
-	}
+	/**
+	 * 
+	 * @param type $item
+	 * @return \stdClass
+	 */
+//	protected function _getItemData($item)
+//	{
+//		$data = new \stdClass;
+//		$data->id = $item->getId();
+//		return $data;
+//	}
 
 
 	public function update(array $data)
@@ -145,77 +151,96 @@ abstract class AbstractBudgetService
 	protected function _fillEntity($entity, array $data)
 	{
 		$reflector = new \ReflectionClass($entity);
-		$props   = $reflector->getProperties();
+		$properties   = $reflector->getProperties();
 
-		foreach ($props as $property)
+		foreach ($properties as $property)
 		{
 			$property->setAccessible(true);
-			$name = $property->getName();
-			if (strtolower($name) == 'id')
+			$property_name = $property->getName();
+			if (strtolower($property_name) == 'id')
 			{
 				continue;
 			}
 			$property->setAccessible(false);
-			if (isset($data[$name]))
+			if (isset($data[$property_name]))
 			{
-				$_base_method_name = implode('', array_map('ucfirst', explode('_', $name)));
+				$_base_method_name = implode('', array_map('ucfirst', explode('_', $property_name)));
 				$get_method = "get" . $_base_method_name;
-				$prop = $entity->$get_method();
+				$property = $entity->$get_method();
 				
-				if ($prop instanceof ArrayCollection)
+				$property_value = null;
+				
+				if ($property instanceof PersistentCollection ||
+					$property instanceof ArrayCollection)
 				{
-					foreach ($data[$name] as $value) {
-						$prop->add($value);
+					// Array collections are filled later within each entity service by method _fillEntityCollections()
+					continue;
+				} else if (isset($this->_entity_relations[$property_name])) {
+					if (!isset($this->_entity_relations[$property_name]['entity'])) {
+						throw new Exception("Bad configuration for entity relation property '{$this->_entity_relations[$property_name]}' of entity '" .  get_class($entity) . "'");
 					}
+						
+					$property_value = $this->getObjectManager()->getRepository($this->_entity_relations[$property_name]['entity'])->find($data[$property_name]);
 				} else {
-					$set_method = "set" . $_base_method_name;
-					$entity->$set_method($data[$name]);
+					$property_value = $data[$property_name];
 				}
+				
+				$set_method = "set" . $_base_method_name;
+				$entity->$set_method($property_value);
 			}
 		}
+		
+		$this->_fillEntityCollections($entity, $data);
+	}
+	
+	/**
+	 * 
+	 * @param type $entity
+	 * @param type $data
+	 * @return \Budget\Service\AbstractBudgetService
+	 */
+	protected function _fillEntityCollections($entity, $data)
+	{
+		return $this;
 	}
 
-	protected function _entityToStdClass(array $array)
+	protected function _entityToStdClass($entity)
 	{
-		$arr = array();
-//		$obj = new \stdClass;
 		
-		foreach($array as $entity)
+		$reflector = new \ReflectionClass(get_class($entity));
+		$props   = $reflector->getProperties();
+		$obj = new \stdClass;
+
+		foreach ($props as $property)
 		{
-			$reflector = new \ReflectionClass(get_class($entity));
-			$props   = $reflector->getProperties();
-			$obj = new \stdClass;
-			
-			foreach ($props as $property)
+			$property->setAccessible(true);
+			$value = $property->getValue($entity);
+			$name = $property->getName();
+
+			$method_name = 'get' . implode('', array_map('ucfirst', explode('_', $name)));
+
+			$prop_obj = null;
+			if (method_exists($entity, $method_name))
 			{
-				$property->setAccessible(true);
-				$value = $property->getValue($entity);
-				$name = $property->getName();
-				
-				$method_name = 'get' . implode('', array_map('ucfirst', explode('_', $name)));
-				
-				$prop_obj = null;
-				if (method_exists($entity, $method_name))
-				{
-					$prop_obj = $entity->$method_name();
-					
-				}
-				if (is_object($prop_obj) && 
-					get_class($prop_obj) === 'Doctrine\ORM\PersistentCollection')
-				{
-					$value = array();
-					foreach ($prop_obj as $val){
-						$value[] = $val;
-					}
-				}
-				$obj->$name = $value;
-					
-				$property->setAccessible(false);
+				$prop_obj = $entity->$method_name();
 			}
-			$arr[] = $obj;
+			
+			if ($prop_obj instanceof PersistentCollection)
+			{
+				$value = array();
+				foreach ($prop_obj as $item){
+					$value[] = $this->_entityToStdClass($item, true);
+				}
+			} else if ($prop_obj instanceof BudgetEntityInterface) {
+				$value = $this->_entityToStdClass($prop_obj, true);
+			}
+			
+			$obj->$name = $value;
+
+			$property->setAccessible(false);
 		}
 		
-		return $arr;
+		return $obj;
 	}
 
 }

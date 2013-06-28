@@ -27,9 +27,7 @@ Ext.define('Budget.view.admin.company.List' ,{
 //			xtype: 'checkcolumn',
 //			hideable: false, 
 //			hidden: true,
-			renderer: function(val) {
-				return (val == 1) ? 'yes':'no';
-			}
+			renderer: this.renderBoolean
 		}];
 	
 		this.callParent(arguments);

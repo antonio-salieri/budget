@@ -25,9 +25,7 @@ Ext.define('Budget.view.admin.acct_type.List' ,{
 			dataIndex: 'type',  
 			flex: 1,
 			editable: true,
-			renderer: function(val) {
-				return (val == 1) ? 'Outcome':'Income';
-			}
+			renderer: this.renderBoolean
 		}, {
 			header: 'Is 1:1', 
 			dataIndex: 'is11',  
@@ -35,9 +33,7 @@ Ext.define('Budget.view.admin.acct_type.List' ,{
 //			xtype: 'checkcolumn',
 //			hideable: false, 
 //			hidden: true,
-			renderer: function(val) {
-				return (val == 1) ? 'yes':'no';
-			}
+			renderer: this.renderBoolean
 		}];
 	
 		this.callParent(arguments);
