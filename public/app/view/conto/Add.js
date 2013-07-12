@@ -50,9 +50,10 @@ Ext.define('Budget.view.conto.Add' ,{
 				allowBlank: false,
 				store: 'Users',
 				fieldLabel: 'User',
-				queryMode: 'local',
+				queryMode: 'remote',
 				triggerAction: 'all',
 				valueField: 'id',
+				visible: false,
 				displayField: 'firstName'
 			}, {
 				xtype: 'combobox',
@@ -61,7 +62,7 @@ Ext.define('Budget.view.conto.Add' ,{
 				allowBlank: false,
 				store: 'Companies',
 				fieldLabel: 'Company',
-				queryMode: 'local',
+				queryMode: 'remote',
 				triggerAction: 'all',
 				valueField: 'id',
 				displayField: 'name'
@@ -72,7 +73,7 @@ Ext.define('Budget.view.conto.Add' ,{
 				allowBlank: false,
 				store: 'Accttypes',
 				fieldLabel: (this.action == 'income') ? 'Income type' : 'Outcome type',
-				queryMode: 'local',
+				queryMode: 'remote',
 				triggerAction: 'all',
 //				action: this.action,
 //				listeners: {
