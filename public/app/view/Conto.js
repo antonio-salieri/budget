@@ -9,29 +9,46 @@ Ext.define('Budget.view.Conto' ,{
         this.items = [{
 			xtype: 'contolist',
 			title: false,
-			region: 'center'
-//			flex: 10
+			region: 'center',
+			itemId: 'contolist'
 		}, {
 			split: true,
-			floatable : true,
-			collapsed:true,
-			xtype: 'panel',
-			title: 'Totals',
-			collapsible : true,
-			html: 'Totals',
-			region: 'east',
-			width: 250
-		}, {
-			split: true,
-			floatable : true,
-			collapsed:true,
+			floatable: true,
+			collapsed: false,
+			collapsible: true,
 			xtype: 'contofilterform',
 			title: 'Filter',
-			collapsible : true,
-//			html: 'Filters',
-			region: 'north'
+			region: 'north',
+			itemId: 'contofilter'
+		}, {
+			split: true,
+			floatable: true,
+			collapsed: true,
+			collapsible: true,
+			xtype: 'contototal',
+			html: 'Totals',
+			region: 'east',
+			width: 250,
+			itemId: 'contototal'
 		}];
 	
 		this.callParent(arguments);
+		
+		this.getComponent('contolist').getStore().on('load', this.reloadTotals, this);
+	},
+	
+	
+	reloadTotals: function(store, records, success_flag, opts) {
+		
+		var totals_data = store.getProxy().getReader().rawData.totals_data,
+			totals_view = this.getComponent('contototal');
+		
+		if (totals_data.balance) {
+			totals_view.setTitle(totals_view.baseTitle + ' [' + Ext.util.Format.currency(totals_data.balance) + ']');
+		} else {
+			totals_view.setTitle(totals_view.baseTitle);
+		}
+		
+		totals_view.update(totals_data);
 	}
 });

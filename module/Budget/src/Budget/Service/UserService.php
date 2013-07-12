@@ -9,17 +9,6 @@ class UserService extends AbstractBudgetService
 {
 	protected $_entity_name = 'Budget\Entity\User';
 
-//	public function getUserCompanies($user_id)
-//	{
-//		if (!isset($user_id))
-//		{
-//			throw new \Exception('No entity id passed for update.');
-//		}
-//		
-//		$entity  = $this->getRepository()->findOneById($user_id);
-//		return $entity->getCompanies();
-//	}
-	
 	protected function _fillEntityCollections($entity, $data)
 	{
 		/*

@@ -18,23 +18,23 @@ Ext.define('Budget.view.conto.List' ,{
 			hidden: true
 		}, {
 			header: 'Income',  
-			dataIndex: 'income',  
+			dataIndex: 'income',
+			align: 'right',
 			flex: 1, 
-			hideable: true
+			hideable: true,
+			renderer: this.renderIncome,
+			style: { color: 'green !important;font-weight: bold !important;' }
 		}, {
 			header: 'Outcome',  
 			dataIndex: 'outcome',  
+			align: 'right',
 			flex: 1, 
-			hideable: true
+			hideable: true,
+			renderer: this.renderOutcome,
+			style: { color: 'red !important;font-weight: bold !important;' }
 		}, {
 			header: 'Entry Time',  
 			dataIndex: 'entryTime',  
-			flex: 1, 
-			hideable: true,
-			renderer: this.renderDateTime
-		}, {
-			header: 'Update Time',  
-			dataIndex: 'updateTime',  
 			flex: 1, 
 			hideable: true,
 			hidden: true,
@@ -44,7 +44,7 @@ Ext.define('Budget.view.conto.List' ,{
 			dataIndex: 'executionDate',  
 			flex: 1, 
 			hideable: true,
-			hidden: true,
+			hidden: false,
 			renderer: this.renderDate
 		}, {
 			header: 'Is 1:1',  
@@ -58,18 +58,21 @@ Ext.define('Budget.view.conto.List' ,{
 			dataIndex: 'type',
 			flex: 1, 
 			hideable: true,
+			sortable: false,
 			renderer: this.renderName
 		}, {
 			header: 'User',  
 			dataIndex: 'user',
 			flex: 1, 
 			hideable: true,
+			sortable: false,
 			renderer: this.renderName
 		}, {
 			header: 'Company',  
 			dataIndex: 'company',
 			flex: 1, 
 			hideable: true,
+			sortable: false,
 			renderer: this.renderName
 		}, {
 			header: 'Note',  
@@ -78,16 +81,11 @@ Ext.define('Budget.view.conto.List' ,{
 			hideable: true,
 			hidden: true
 		}, {
-			header: 'User',  
-			dataIndex: 'user',  
-			flex: 1, 
-			hideable: false,
-			hidden: true
-		}, {
 			header: 'Company',  
 			dataIndex: 'company',  
 			flex: 1, 
 			hideable: false,
+			sortable: false,
 			hidden: true
 		}];
 		
@@ -107,5 +105,24 @@ Ext.define('Budget.view.conto.List' ,{
 				action: "add_outcome"
 			}]
 		};
+	},
+	
+	/*
+	 * Renderers
+	 */
+	renderIncome: function(value) {
+		return [
+			'<span style="color: green!important; font-weight: bold !important;">',
+			(value) ? Ext.util.Format.currency(value, ' ') : '-',
+			'</span>'
+		].join('');
+	},
+	
+	renderOutcome: function(value) {
+		return [
+			'<span style="color: red !important; font-weight: bold !important;">',
+			(value) ? Ext.util.Format.currency(value, ' ') : '-',
+			'</span>'
+		].join('');
 	}
 });

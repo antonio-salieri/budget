@@ -51,6 +51,7 @@ Ext.define('Budget.view.abstract.List' ,{
 		}
 		
         this.callParent(arguments);
+		this.on('afterrender', this.loadStore, this);
     },
 
 	renderBoolean: function(val) {
@@ -84,5 +85,12 @@ Ext.define('Budget.view.abstract.List' ,{
 				action: "add"
 			}]
 		};
+	},
+	
+	loadStore: function() {
+		if (this.store) {
+			this.store.load();
+		}
 	}
+	
 });

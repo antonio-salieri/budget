@@ -106,41 +106,50 @@ abstract class AbstractBudgetService
 	
 	/**
 	 * 
-	 * @param type $item
-	 * @return \stdClass
+	 * @param array $data
+	 * @return Budget\Entity\BudgetEntityInterface
+	 * @throws \Exception
 	 */
-//	protected function _getItemData($item)
-//	{
-//		$data = new \stdClass;
-//		$data->id = $item->getId();
-//		return $data;
-//	}
-
-
-	public function update(array $data)
+	public function update(array $data, $flush = true)
 	{
 		if (!isset($data['id']))
 		{
 			throw new \Exception('No entity id passed for update.');
 		}
+		/** @var Budget\Entity\BudgetEntityInterface */
 		$entity  = $this->getRepository()->findOneById($data['id']);
 		$this->_fillEntity($entity, $data);
-		$this->getObjectManager()->flush();
+		if ($flush) {
+			$this->getObjectManager()->flush();
+		}
+		
+		return $entity;
 	}
 	
-	public function add(array $data)
+	/**
+	 * 
+	 * @param array $data
+	 * @return Budget\Entity\BudgetEntityInterface
+	 */
+	public function add(array $data, $flush = true)
 	{
+		/** @var Budget\Entity\BudgetEntityInterface */
 		$entity  = new $this->_entity_name;
 		$this->_fillEntity($entity, $data);
 		$this->getObjectManager()->persist($entity);
-		$this->getObjectManager()->flush();
+		if ($flush) {
+			$this->getObjectManager()->flush();
+		}
+		return $entity;
 	}
 	
-	public function delete($id)
+	public function delete($id, $flush = true)
 	{
 		$entity  = $this->getRepository()->findOneById($id);
 		$this->getObjectManager()->remove($entity);
-		$this->getObjectManager()->flush();
+		if ($flush) {
+			$this->getObjectManager()->flush();
+		}
 	}
 	
 	/**
@@ -204,8 +213,12 @@ abstract class AbstractBudgetService
 		return $this;
 	}
 
-	protected function _entityToStdClass($entity)
+	protected function _entityToStdClass($entity, $fetch_only_id = false)
 	{
+		
+		if ($fetch_only_id && method_exists($entity, 'getId')) {
+			return $entity->getId();
+		}
 		
 		$reflector = new \ReflectionClass(get_class($entity));
 		$props   = $reflector->getProperties();
@@ -232,7 +245,7 @@ abstract class AbstractBudgetService
 					$value[] = $this->_entityToStdClass($item, true);
 				}
 			} else if ($prop_obj instanceof BudgetEntityInterface) {
-				$value = $this->_entityToStdClass($prop_obj, true);
+				$value = $this->_entityToStdClass($prop_obj);
 			}
 			
 			$obj->$name = $value;

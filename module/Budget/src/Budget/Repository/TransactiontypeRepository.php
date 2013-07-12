@@ -16,11 +16,13 @@ class TransactiontypeRepository extends AbstractRepository
 		$qb = $this->_em->createQueryBuilder();
 		$qb	->select('main')
 			->from('Budget\Entity\Transactiontype', 'main')
-			->where($this->_getWherePart($criteria))
+//			->where($this->_getWherePart($criteria))
 			->orderBy($order_property, $order_direction)
 			->setFirstResult($offset)
 			->setMaxResults($limit);
-
+		
+		$this->_setWherePart($criteria, $qb);
+		
 		$query = $qb->getQuery();
 		
 		$paginator = new Paginator($query, $fetchJoinCollection = true);

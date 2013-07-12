@@ -28,7 +28,8 @@ class TransactionController extends AbstractBudgetController
 		return new JsonModel(array(
 			'success' => true,
 			'result' => $result['result'],
-			'total' => $result['total']
+			'total' => $result['total'],
+			'totals_data' => $result['totals_data']
 		));
     }
 	

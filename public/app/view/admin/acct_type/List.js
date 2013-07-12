@@ -25,17 +25,21 @@ Ext.define('Budget.view.admin.acct_type.List' ,{
 			dataIndex: 'type',  
 			flex: 1,
 			editable: true,
-			renderer: this.renderBoolean
+			renderer: this.renderEntryType
 		}, {
 			header: 'Is 1:1', 
 			dataIndex: 'is11',  
 			flex: 1, 
-//			xtype: 'checkcolumn',
-//			hideable: false, 
-//			hidden: true,
 			renderer: this.renderBoolean
 		}];
 	
 		this.callParent(arguments);
-    }
+    },
+	
+	/*
+	 * Renderers
+	 */
+	renderEntryType: function(val) {
+		return (val == 0) ? 'Income' : 'Outcome';
+	}
 });

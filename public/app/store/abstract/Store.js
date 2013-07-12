@@ -1,21 +1,29 @@
 Ext.define('Budget.store.abstract.Store', {
     extend: 'Ext.data.Store',
 	
-	autoLoad: true,
+	autoLoad: false,
 	reloadAfterSync: true,
+	remoteSort: true,
 	
-	listeners: {
-		add: {
-			fn: function( store, records, index, eOpts ) {
-				store.reload();
-			}
-		}
-	},
+//	listeners: {
+//		add: {
+//			fn: function( store, records, index, eOpts ) {
+//				store.reload();
+//			}
+//		}
+//	},
 	
 	synchronize: function() {
-		this.sync();
+		
 		if (this.reloadAfterSync) {
-			this.reload();
+			this.sync({
+				callback: function() {
+					this.reload();
+				},
+				scope: this
+			});
+		} else {
+			this.sync();
 		}
 	}
 	

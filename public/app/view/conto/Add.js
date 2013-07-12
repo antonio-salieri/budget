@@ -75,6 +75,15 @@ Ext.define('Budget.view.conto.Add' ,{
 				queryMode: 'local',
 				triggerAction: 'all',
 //				action: this.action,
+//				listeners: {
+//					afterrender: {
+//						fn: function() {
+//							this.store.clearFilter(true);
+//							this.store.filter('type', (this.action == 'income') ? 0 : 1);
+//						},
+//						scope: this
+//					}
+//				},
 //				validator: function(val_obj) {
 //					if (this.action == 'income') {
 //						return val_obj.type == 0;	// 0 => income type

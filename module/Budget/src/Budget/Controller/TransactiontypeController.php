@@ -12,6 +12,8 @@ class TransactiontypeController extends AbstractBudgetController
 	
     public function indexAction()
     {
+		parent::indexAction();
+		
 		try {
 			/** @var Budget\Service\Transactiontype */
 			$service = $this->getServiceLocator()->get('budget.service.transactiontype');

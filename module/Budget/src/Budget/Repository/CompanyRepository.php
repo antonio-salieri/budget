@@ -15,10 +15,12 @@ class CompanyRepository extends AbstractRepository
 		$qb = $this->_em->createQueryBuilder();
 		$qb	->select('main')
 			->from('Budget\Entity\Company', 'main')
-			->where($this->_getWherePart($criteria))
+//			->where($this->_getWherePart($criteria))
 			->orderBy($order_property, $order_direction)
 			->setFirstResult($offset)
 			->setMaxResults($limit);
+		
+		$this->_setWherePart($criteria, $qb);
 
 		$query = $qb->getQuery();
 		
@@ -29,5 +31,12 @@ class CompanyRepository extends AbstractRepository
 			'total' => $paginator->count()
 		);
 		
+	}
+	
+	public function get11Company()
+	{
+		return $this->findOneBy(array(
+			'is11' => true
+		));
 	}
 }

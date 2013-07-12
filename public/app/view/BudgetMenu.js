@@ -37,7 +37,8 @@ Ext.define('Budget.view.BudgetMenu', {
 		}, {
 			text: 'Reports',
 			scale: 'large',
-			action: 'reportspanel'
+			action: 'reportspanel',
+			disabled: true
 		}, {
 			text: 'Administration',
 			scale: 'large',

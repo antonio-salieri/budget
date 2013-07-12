@@ -5,6 +5,7 @@ Ext.define('Budget.view.conto.View' ,{
 	store: ['Contos', 'Users', 'Companies'],
 	
 	viewTitle: 'View conto',
+	autoShow: false,
 	
     initComponent: function() {
 		
@@ -67,6 +68,7 @@ Ext.define('Budget.view.conto.View' ,{
 		);
         this.items = [{
 			xtype: 'panel',
+			autoScroll: true,
 			frame: false,
 			bodyPadding: 7,
 			

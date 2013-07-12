@@ -20,7 +20,7 @@ class CompanyController extends AbstractBudgetController
 	
     public function indexAction()
     {
-		
+		parent::indexAction();
 		try {
 			/** @var Budget\Service\CompanyService */
 			$service = $this->getServiceLocator()->get('budget.service.company');

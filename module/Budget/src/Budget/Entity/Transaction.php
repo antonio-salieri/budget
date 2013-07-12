@@ -161,12 +161,16 @@ class Transaction implements BudgetEntityInterface
     /**
      * Set entryTime
      *
-     * @param \DateTime $entryTime
+     * @param \DateTime|string $entryTime
      * @return Transaction
      */
     public function setEntryTime($entryTime)
     {
-        $this->entryTime = $entryTime;
+		if ($entryTime instanceof \DateTime) {
+			$this->entryTime = $entryTime;
+		} else if (is_string($entryTime)) {
+			$this->entryTime = new \DateTime($entryTime);
+		}
     
         return $this;
     }
@@ -184,12 +188,16 @@ class Transaction implements BudgetEntityInterface
     /**
      * Set updateTime
      *
-     * @param \DateTime $updateTime
+     * @param \DateTime|string $updateTime
      * @return Transaction
      */
     public function setUpdateTime($updateTime)
     {
-        $this->updateTime = $updateTime;
+		if ($updateTime instanceof \DateTime) {
+			$this->updateTime = $updateTime;
+		} else if (is_string($updateTime)) {
+			$this->updateTime = new \DateTime($updateTime);
+		}
     
         return $this;
     }
@@ -212,7 +220,11 @@ class Transaction implements BudgetEntityInterface
      */
     public function setExecutionDate($executionDate)
     {
-        $this->executionDate = $executionDate;
+		if ($executionDate instanceof \DateTime) {
+			$this->executionDate = $executionDate;
+		} else if (is_string($executionDate)) {
+			$this->executionDate = new \DateTime($executionDate);
+		}
     
         return $this;
     }

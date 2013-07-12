@@ -21,6 +21,16 @@ Ext.define('Budget.view.admin.company.Edit' ,{
 				uncheckedValue: 0,
 				inputValue: 1,
 				fieldLabel: 'Is 1:1'
+			}, {
+				xtype: 'panel',
+				frame: false,
+				border: false,
+				html: [
+					'NOTE: Property "Is 1:1" may be set to only one company.',
+					'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Setting this property for other company will automatically',
+					'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; this flag on currently chosen 1:1 company.'
+				].join('<br/>'),
+				style: 'border: 1px dashed black; background: lightyellow;'
 			}]
 		}];
 

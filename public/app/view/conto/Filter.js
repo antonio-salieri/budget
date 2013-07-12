@@ -3,7 +3,7 @@ Ext.define('Budget.view.conto.Filter' ,{
 	alias: 'widget.contofilterform',
 
 	frame: false,
-	bodyPadding: 10,
+	bodyPadding: 5,
 	layout: 'anchor',
 	
 	store: ['Contos'],
@@ -12,7 +12,8 @@ Ext.define('Budget.view.conto.Filter' ,{
 		
 		this.buttons = [{
 			text: 'Filter',
-			action: 'filter'
+			action: 'filter',
+			disabled: false
 		}];
 
         this.items = [{
@@ -20,15 +21,13 @@ Ext.define('Budget.view.conto.Filter' ,{
 			name : 'executionDateFrom',
 			allowBlank: false,
 			fieldLabel: 'Executed from',
-			format: 'Y-m-d',
-			toFrontOnShow: true
+			format: 'Y-m-d'
 		}, {
 			xtype: 'datefield',
 			name : 'executionDateTo',
 			allowBlank: false,
 			fieldLabel: 'Executed to',
-			format: 'Y-m-d',
-			toFrontOnShow: true
+			format: 'Y-m-d'
 		}];
 
 		this.callParent(arguments);

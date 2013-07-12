@@ -7,7 +7,8 @@ Ext.define('Budget.controller.Conto', {
         'conto.List',
         'conto.Add',
         'conto.View',
-        'conto.Filter'
+        'conto.Filter',
+        'conto.Total'
     ],
 	
     init: function() {
@@ -26,9 +27,13 @@ Ext.define('Budget.controller.Conto', {
 			
 			'contoadd button[action=add]': {
 				click: this.addRecord
+			},
+			
+			'contofilterform button[action=filter]': {
+				click: this.fliterConto
 			}
         });
-    },	
+    },
 	
 	showAddIncomeForm: function() {
 		var view = Ext.widget('contoadd', {action: 'income'});
@@ -44,6 +49,7 @@ Ext.define('Budget.controller.Conto', {
 	showItemDetails: function(grid, record) {
 		var view = Ext.widget('contoview');
 		view.down('panel').update(record.getData());
+		view.show();
 	},
 	
 	addRecord: function(button) {
@@ -64,5 +70,39 @@ Ext.define('Budget.controller.Conto', {
 			store.add(values);
 			store.synchronize();
 		}
+	},
+	
+	fliterConto: function(button) {
+		var store = this.getContosStore(),
+			proxy = store.getProxy(),
+			form = button.up('contofilterform'),
+			data = form.getValues(),
+			filter_data = [];
+		
+		if (data.executionDateFrom) {
+			filter_data.push({
+				executionDate: {
+					oper: 'gte', 
+					value: data.executionDateFrom
+				}
+			});
+		}
+		
+		if (data.executionDateTo) {
+			filter_data.push({
+				executionDate: {
+					oper: 'lte', 
+					value: data.executionDateTo
+				}
+			});			
+		}
+		
+		proxy.setExtraParam('filter', Ext.JSON.encode(filter_data));
+		
+//		Ext.Object.each(data, function(key, value, me) {
+//			proxy.setExtraParam(key, value);
+//		});
+		
+		store.load();
 	}
 });

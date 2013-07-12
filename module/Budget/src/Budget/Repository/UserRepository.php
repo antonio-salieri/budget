@@ -17,11 +17,13 @@ class UserRepository extends AbstractRepository
 		$qb	->select('main, c')
 			->from('Budget\Entity\User', 'main')
 			->leftJoin('main.companies', 'c')
-			->where($this->_getWherePart($criteria))
+//			->where($this->_getWherePart($criteria))
 			->orderBy($order_property, $order_direction)
 			->setFirstResult($offset)
 			->setMaxResults($limit);
 
+		$this->_setWherePart($criteria, $qb);
+		
 		$query = $qb->getQuery();
 		
 		$paginator = new Paginator($query, $fetchJoinCollection = true);
