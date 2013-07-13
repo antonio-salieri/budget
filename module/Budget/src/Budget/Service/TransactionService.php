@@ -44,19 +44,19 @@ class TransactionService extends AbstractBudgetService
 		$original_note = $data['note'];
 		
 		/** @var Budget\Entity\Transaction */
-		$transaction = parent::add($data, false);
+		$transaction = parent::add($data, true);
 		
 		if ($transaction instanceof Transaction) {
 			$transaction_type = $transaction->getType();
-		
+
 			/*
 			 * Resolve TAX
 			 */
-			if ($transaction->getType()->getResolveTaxAutomatically()) {
+			if ($transaction_type->getResolveTaxAutomatically()) {
 				$data['type'] = $this->_getAutoResolveTaxType($transaction_type)->getId();
 
 				if ($transaction_type->getType() == TransactionType::OUTCOME_TYPE) {
-					$data['income'] = $transaction->getOutcome() * Transaction::TAX_PERCENT / 100;
+					$data['income'] = $transaction->getOutcome() - $transaction->getOutcome() * (100 / ( Transaction::TAX_PERCENT + 100 ));
 					$data['outcome'] = null;
 				} else {
 					$data['outcome'] = $transaction->getIncome() * Transaction::TAX_PERCENT / 100;
@@ -83,8 +83,13 @@ Original note:
 			 */
 			if ($transaction_type->getIs11()) {
 				$data['type'] = $transaction->getType()->getId();
-				$data['income'] = $transaction->getIncome();
+				$data['income'] = null;
 				$data['outcome'] = $transaction->getOutcome();
+				
+				if ($transaction_type->getResolveTaxAutomatically())
+				{
+					$data['outcome'] = $transaction->getOutcome() * (100 / ( Transaction::TAX_PERCENT + 100 ));
+				}
 				
 				$company_11 = $this->getObjectManager()->getRepository('Budget\Entity\Company')->get11Company();
 				$data['company'] = $company_11->getId();
