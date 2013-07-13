@@ -19,11 +19,11 @@ Ext.define('Budget.view.admin.Admin' ,{
 			closable: false
 		};
         this.items = [{
-			title: 'Users',
-			xtype: 'userpanel'
-		}, {
 			title: 'Companies',
 			xtype: 'companypanel'
+		}, {
+			title: 'Users',
+			xtype: 'userpanel'
 		}, {
 			title: 'Accounting types',
 			xtype: 'accttypepanel'

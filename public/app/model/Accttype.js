@@ -6,6 +6,6 @@ Ext.define('Budget.model.Accttype', {
 //        'Budget.model.Conto'
 //    ],
 	
-    fields: ['id', 'name', 'is11', 'type'],
+    fields: ['id', 'name', 'is11', 'type', 'isTaxResolver', 'resolveTaxAutomatically'],
 	belongsTo: [{model: 'Budget.model.Conto', associationKey: 'id', foreignKey: 'type'}]
 });

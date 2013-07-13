@@ -31,6 +31,16 @@ Ext.define('Budget.view.admin.acct_type.List' ,{
 			dataIndex: 'is11',  
 			flex: 1, 
 			renderer: this.renderBoolean
+		}, {
+			header: 'Is Tax resolver', 
+			dataIndex: 'isTaxResolver',  
+			flex: 1, 
+			renderer: this.renderBoolean
+		}, {
+			header: 'Auto resolve Tax', 
+			dataIndex: 'resolveTaxAutomatically',  
+			flex: 1, 
+			renderer: this.renderBoolean
 		}];
 	
 		this.callParent(arguments);

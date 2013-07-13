@@ -18,6 +18,7 @@ Ext.define('Budget.store.abstract.Store', {
 		if (this.reloadAfterSync) {
 			this.sync({
 				callback: function() {
+					this.clearFilter(true);
 					this.reload();
 				},
 				scope: this

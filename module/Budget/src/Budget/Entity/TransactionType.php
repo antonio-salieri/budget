@@ -45,6 +45,20 @@ class TransactionType  implements BudgetEntityInterface
      * @ORM\Column(name="is_11", type="boolean", nullable=false)
      */
     private $is11;
+	
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="is_tax_resolver", type="boolean", nullable=false)
+     */
+    private $isTaxResolver;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="auto_resolve_tax", type="boolean", nullable=false)
+     */
+    private $resolveTaxAutomatically;
 
     /**
      * Constructor
@@ -133,5 +147,50 @@ class TransactionType  implements BudgetEntityInterface
     {
         return $this->is11;
     }
+	
+    /**
+     * Set resolveTaxAutomatically
+     *
+     * @param boolean $value
+     * @return TransactionType
+     */
+    public function setResolveTaxAutomatically($value)
+    {
+        $this->resolveTaxAutomatically = $value;
+    
+        return $this;
+    }
+	
+    /**
+     * Get resolveTaxAutomatically
+     *
+     * @return boolean 
+     */
+    public function getResolveTaxAutomatically()
+    {
+        return $this->resolveTaxAutomatically;
+    }
 
+	/**
+     * Set isTaxResolver
+     *
+     * @param boolean $val
+     * @return TransactionType
+     */
+    public function setIsTaxResolver($val)
+    {
+        $this->isTaxResolver = $val;
+    
+        return $this;
+    }
+
+    /**
+     * Get isTaxResolver
+     *
+     * @return boolean 
+     */
+    public function getIsTaxResolver()
+    {
+        return $this->isTaxResolver;
+    }
 }

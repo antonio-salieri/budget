@@ -12,6 +12,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Transaction implements BudgetEntityInterface
 {
+	const TAX_PERCENT = 20;
+	
     /**
      * @var integer
      *

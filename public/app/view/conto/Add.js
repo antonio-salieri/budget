@@ -47,13 +47,13 @@ Ext.define('Budget.view.conto.Add' ,{
 				xtype: 'combobox',
 				multiSelect: false,
 				name: 'user',
-				allowBlank: false,
+				allowBlank: (this.action != 'outcome'),
 				store: 'Users',
 				fieldLabel: 'User',
 				queryMode: 'remote',
 				triggerAction: 'all',
 				valueField: 'id',
-				visible: false,
+				disabled: (this.action == 'income'),
 				displayField: 'firstName'
 			}, {
 				xtype: 'combobox',
@@ -75,16 +75,16 @@ Ext.define('Budget.view.conto.Add' ,{
 				fieldLabel: (this.action == 'income') ? 'Income type' : 'Outcome type',
 				queryMode: 'remote',
 				triggerAction: 'all',
-//				action: this.action,
-//				listeners: {
-//					afterrender: {
-//						fn: function() {
-//							this.store.clearFilter(true);
-//							this.store.filter('type', (this.action == 'income') ? 0 : 1);
-//						},
+				action: this.action,
+				listeners: {
+					afterrender: {
+						fn: function() {
+							this.store.clearFilter(true);
+							this.store.filter('type', (this.action == 'income') ? 0 : 1);
+						}//,
 //						scope: this
-//					}
-//				},
+					}
+				},
 //				validator: function(val_obj) {
 //					if (this.action == 'income') {
 //						return val_obj.type == 0;	// 0 => income type

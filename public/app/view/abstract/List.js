@@ -69,9 +69,11 @@ Ext.define('Budget.view.abstract.List' ,{
 	},
 	
 	renderName: function(val_obj) {
-		if (val_obj.name) {
+		if (! val_obj) {
+			return '-';
+		} else  if (val_obj.name) {
 			return val_obj.name;
-		} else {
+		} else if (val_obj.firstName && val_obj.lastName) {
 			return val_obj.firstName+' '+val_obj.lastName;
 		}
 	},

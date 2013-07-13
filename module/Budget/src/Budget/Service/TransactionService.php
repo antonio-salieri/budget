@@ -41,12 +41,52 @@ class TransactionService extends AbstractBudgetService
 		// Ensure that is11 flag is false for user created transaction
 		$data['is11'] = false;
 		
+		$original_note = $data['note'];
+		
 		/** @var Budget\Entity\Transaction */
 		$transaction = parent::add($data, false);
+		
 		if ($transaction instanceof Transaction) {
-			if ($transaction->getType()->getIs11()) {
+			$transaction_type = $transaction->getType();
+		
+			/*
+			 * Resolve TAX
+			 */
+			if ($transaction->getType()->getResolveTaxAutomatically()) {
+				$data['type'] = $this->_getAutoResolveTaxType($transaction_type)->getId();
+
+				if ($transaction_type->getType() == TransactionType::OUTCOME_TYPE) {
+					$data['income'] = $transaction->getOutcome() * Transaction::TAX_PERCENT / 100;
+					$data['outcome'] = null;
+				} else {
+					$data['outcome'] = $transaction->getIncome() * Transaction::TAX_PERCENT / 100;
+					$data['income'] = null;
+				}
+
+
+				$data['note'] = "
+Automated note:
+>>>>>>>>>>>>>>>>
+This is automatically created entry for Tax resolving, i.e. generating
+entries for Tax returning, for some outcome types and Tax payment for some
+income types
+>>>>>>>>>>>>>>>>
+
+Original note:
+" . $original_note;
+				parent::add($data, false);
+			}
+		
+		
+			/*
+			 * Resolve 1:1 conto
+			 */
+			if ($transaction_type->getIs11()) {
+				$data['type'] = $transaction->getType()->getId();
+				$data['income'] = $transaction->getIncome();
+				$data['outcome'] = $transaction->getOutcome();
+				
 				$company_11 = $this->getObjectManager()->getRepository('Budget\Entity\Company')->get11Company();
-				$transaction_id = $transaction->getId();
 				$data['company'] = $company_11->getId();
 				$data['is11'] = true;
 				$data['note'] = "
@@ -56,15 +96,31 @@ This is automatically created transaction regarding 1:1 rule.'
 >>>>>>>>>>>>>>>>
 
 Original note:
-" . $data['note'];
+" . $original_note;
 
 				parent::add($data, false);
 			}
 		}
 		
+		
 		$this->getObjectManager()->flush();
+		return $transaction;
 	}
 	
+	
+	/**
+	 * 
+	 * @param \Budget\Entity\TransactionType $transaction_type
+	 * @return \Budget\Entity\TransactionType
+	 */
+	private function _getAutoResolveTaxType(TransactionType $transaction_type)
+	{
+		return $this->getServiceLocator()
+					->get('budget.service.transactiontype')
+					->getTaxResolverType($transaction_type);		
+	}
+
+
 	/**
 	 * Disable transactions deleting
 	 * @param type $id

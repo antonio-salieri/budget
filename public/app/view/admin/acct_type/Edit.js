@@ -41,6 +41,28 @@ Ext.define('Budget.view.admin.acct_type.Edit' ,{
 				uncheckedValue: 0,
 				inputValue: 1,
 				fieldLabel: 'Is 1:1'
+			}, {
+				xtype: 'checkbox',
+				name : 'isTaxResolver',
+				uncheckedValue: 0,
+				inputValue: 1,
+				fieldLabel: 'Is Tax resolver'
+			}, {
+				xtype: 'panel',
+				frame: false,
+				border: false,
+				html: [
+					'NOTE: Property "Is Tax resolver" may be set to only one income and one outcome type.',
+					'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Income type is used for auto Tax returning conto.',
+					'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Outcome type is used for auto Tax payment conto.'
+				].join('<br/>'),
+				style: 'border: 1px dashed black; background: lightyellow;'
+			}, {
+				xtype: 'checkbox',
+				name : 'resolveTaxAutomatically',
+				uncheckedValue: 0,
+				inputValue: 1,
+				fieldLabel: 'Auto resolve Tax'
 			}]
 		}];
 
