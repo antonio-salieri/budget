@@ -99,6 +99,7 @@ div.container a.brand {
 .strike-through-row .x-grid-cell {
     text-decoration: line-through;
 	color: #aaa;
+	font-style: italic;
 }
 
 .strike-through-row .x-action-col-cell img{

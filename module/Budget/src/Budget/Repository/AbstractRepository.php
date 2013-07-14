@@ -58,7 +58,7 @@ abstract class AbstractRepository extends EntityRepository
 							throw new \Exception("No filter condition value set!");
 						}
 
-						$where->add($qb->expr()->$oper("main.{$field}", $param_placeholder_prefix . $param_placeholder_id));
+						$where->add($qb->expr()->$oper($field, $param_placeholder_prefix . $param_placeholder_id));
 
 						$qb->setParameter($param_placeholder_prefix . $param_placeholder_id, $value);
 						$param_placeholder_id++;

@@ -81,7 +81,7 @@ Ext.define('Budget.controller.Conto', {
 		
 		if (data.executionDateFrom) {
 			filter_data.push({
-				executionDate: {
+				'main.executionDate': {
 					oper: 'gte', 
 					value: data.executionDateFrom
 				}
@@ -90,11 +90,28 @@ Ext.define('Budget.controller.Conto', {
 		
 		if (data.executionDateTo) {
 			filter_data.push({
-				executionDate: {
+				'main.executionDate': {
 					oper: 'lte', 
 					value: data.executionDateTo
 				}
-			});			
+			});
+		}
+		if (data.company) {
+			filter_data.push({
+				'c.id': {
+					oper: 'eq', 
+					value: data.company
+				}
+			});
+		}
+		
+		if (data.type) {
+			filter_data.push({
+				'tt.id': {
+					oper: 'in', 
+					value: data.type
+				}
+			});
 		}
 		
 		proxy.setExtraParam('filter', Ext.JSON.encode(filter_data));

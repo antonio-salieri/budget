@@ -17,17 +17,59 @@ Ext.define('Budget.view.conto.Filter' ,{
 		}];
 
         this.items = [{
-			xtype: 'datefield',
-			name : 'executionDateFrom',
-			allowBlank: false,
-			fieldLabel: 'Executed from',
-			format: 'Y-m-d'
-		}, {
-			xtype: 'datefield',
-			name : 'executionDateTo',
-			allowBlank: false,
-			fieldLabel: 'Executed to',
-			format: 'Y-m-d'
+			xtype: 'container',
+			flex: 1,
+			layout: 'hbox',
+			items: [{
+				xtype: 'container',
+				flex: 1,
+				layout: 'anchor',
+				items: [{
+					xtype: 'datefield',
+					name : 'executionDateFrom',
+					allowBlank: true,
+					fieldLabel: 'Executed from',
+					format: 'Y-m-d'
+				}, {
+					xtype: 'datefield',
+					name : 'executionDateTo',
+					allowBlank: true,
+					fieldLabel: 'Executed to',
+					format: 'Y-m-d'
+				}]
+			}, {
+				xtype: 'container',
+				flex: 1,
+				layout: 'anchor',
+				items: [{
+					xtype: 'combobox',
+					multiSelect: false,
+					name: 'company',
+					allowBlank: true,
+					store: 'Companies',
+					fieldLabel: 'Company',
+					queryMode: 'remote',
+					triggerAction: 'all',
+					valueField: 'id',
+					displayField: 'name'
+				}]
+			}, {
+				xtype: 'container',
+				flex: 1,
+				layout: 'anchor',
+				items: [{
+					xtype: 'combobox',
+					multiSelect: true,
+					name: 'type',
+					allowBlank: true,
+					store: 'Accttypes',
+					fieldLabel: 'Transaction types',
+					queryMode: 'remote',
+					triggerAction: 'all',
+					valueField: 'id',
+					displayField: 'name'
+				}]
+			}]
 		}];
 
 		this.callParent(arguments);
