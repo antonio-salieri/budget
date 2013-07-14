@@ -63,7 +63,7 @@ Ext.define('Budget.view.conto.Filter' ,{
 					name: 'type',
 					allowBlank: true,
 					store: 'Accttypes',
-					fieldLabel: 'Transaction types',
+					fieldLabel: 'Types',
 					queryMode: 'remote',
 					triggerAction: 'all',
 					valueField: 'id',
