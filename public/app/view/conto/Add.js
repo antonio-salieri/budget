@@ -30,8 +30,8 @@ Ext.define('Budget.view.conto.Add' ,{
 				name : 'income',
 				disabled: (this.action != 'income'),
 				allowBlank: (this.action != 'income'),
-				regex: /^\d+$/i,
-				maskRe: /\d/i,
+				regex: /^(\d+\.\d{2}|\d+)$/i,
+				maskRe: /[\d\.]/i,
 				value: 0,
 				fieldLabel: 'Income'
 			}, {
@@ -39,8 +39,8 @@ Ext.define('Budget.view.conto.Add' ,{
 				name : 'outcome',
 				disabled: (this.action == 'income'),
 				allowBlank: (this.action == 'income'),
-				regex: /^\d+$/i,
-				maskRe: /\d/i,
+				regex: /^(\d+\.\d{2}|\d+)$/i,
+				maskRe: /[\d\.]/i,
 				value: 0,
 				fieldLabel: 'Outcome'
 			}, {

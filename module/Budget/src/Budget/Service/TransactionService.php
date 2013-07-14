@@ -44,7 +44,7 @@ class TransactionService extends AbstractBudgetService
 		$original_note = $data['note'];
 		
 		/** @var Budget\Entity\Transaction */
-		$transaction = parent::add($data, true);
+		$transaction = parent::add($data, false);
 		
 		if ($transaction instanceof Transaction) {
 			$transaction_type = $transaction->getType();
