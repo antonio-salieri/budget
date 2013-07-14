@@ -1,4 +1,4 @@
-
+Ext.BLANK_IMAGE_URL = '/img/s.gif';
 Ext.application({
 	name: 'Budget',    
 	autoCreateViewport: true,

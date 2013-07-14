@@ -48,15 +48,28 @@ Ext.define('Budget.view.conto.View' ,{
 			{
 				disableFormats: true,
 				getUserFullName: function(user) {
-					return user.firstName+" "+user.lastName;
+					
+					if (user) {
+						return user.firstName+" "+user.lastName;
+					} else {
+						return "-";
+					}
 				},
 				renderDate: function(date_obj) {
-					var dt = new Date(date_obj.date);
-					return Ext.Date.format(dt, 'd. m. Y.');
+					if (date_obj) {
+						var dt = new Date(date_obj.date);
+						return Ext.Date.format(dt, 'd. m. Y.');
+					} else {
+						return "-";
+					}
 				},
 				renderDateTime: function(datetime_obj) {
-					var dt = new Date(datetime_obj.date);
-					return Ext.Date.format(dt, 'd. m. Y. H:i:s');
+					if (datetime_obj) {
+						var dt = new Date(datetime_obj.date);
+						return Ext.Date.format(dt, 'd. m. Y. H:i:s');
+					} else {
+						return "-";
+					}
 				},
 				renderValue: function(value) {
 					return (value) ? value : '-';

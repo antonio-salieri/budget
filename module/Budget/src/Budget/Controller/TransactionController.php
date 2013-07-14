@@ -77,8 +77,9 @@ class TransactionController extends AbstractBudgetController
 		));
 	}
 	
-	public function deleteAction()
+	public function stornoAction()
 	{
+		/** @var Budget\Service\TransactionService */
 		$service = $this->getServiceLocator()->get('budget.service.transaction');
 		
 		try {

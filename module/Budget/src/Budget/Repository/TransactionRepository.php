@@ -48,6 +48,8 @@ class TransactionRepository extends AbstractRepository
 		
 		$this->_setWherePart($criteria, $qb);
 		
+		$qb->andWhere('main.stornoTime IS NULL');
+		
 		$query = $qb->getQuery();
 		$result = $query->getResult();
 		

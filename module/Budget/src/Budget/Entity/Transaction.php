@@ -102,8 +102,20 @@ class Transaction implements BudgetEntityInterface
      */
     private $user;
 
-
-
+	/**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="storno_time", type="datetime", nullable=true)
+     */
+    private $stornoTime;
+	
+	/**
+     * @var integer
+     *
+     * @ORM\Column(name="linked_transaction_id", type="integer", nullable=true)
+     */
+    private $linkedTransactionId;
+	
     /**
      * Get id
      *
@@ -355,4 +367,57 @@ class Transaction implements BudgetEntityInterface
     {
         return $this->user;
     }
+	
+	
+    /**
+     * Set entryTime
+     *
+     * @param \DateTime|string $stornoTime
+     * @return Transaction
+     */
+    public function setStornoTime($stornoTime)
+    {
+		$this->stornoTime = null;
+		if (!empty($stornoTime)) {
+			
+			if ($stornoTime instanceof \DateTime) {
+				$this->stornoTime = $stornoTime;
+			} else if (is_string($stornoTime)) {
+				$this->stornoTime = new \DateTime($stornoTime);
+			}
+		}
+    
+        return $this;
+    }
+
+    /**
+     * Get entryTime
+     *
+     * @return \DateTime 
+     */
+    public function getStornoTime()
+    {
+        return $this->stornoTime;
+    }
+	
+	/**
+	 * Get Linked Transaction Id
+	 * @return integer
+	 */
+	public function getLinkedTransactionId()
+	{
+		return $this->linkedTransactionId;
+	}
+	
+	/**
+	 * Set Linked Transaction Id
+	 *
+	 * @param integer $id
+	 * @return \Budget\Entity\Transaction
+	 */
+	public function setLinkedTransactionId($id)
+	{
+		$this->linkedTransactionId = $id;
+		return $this;
+	}
 }

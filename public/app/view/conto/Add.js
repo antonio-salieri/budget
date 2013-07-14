@@ -76,6 +76,7 @@ Ext.define('Budget.view.conto.Add' ,{
 				queryMode: 'remote',
 				triggerAction: 'all',
 				action: this.action,
+				itemId: 'type',
 				listeners: {
 					afterrender: {
 						fn: function() {
@@ -110,6 +111,15 @@ Ext.define('Budget.view.conto.Add' ,{
 				bodyPadding: 5
 			}]
 		}];
+	
+		this.listeners = {
+			close: {
+				fn: function() {
+					var el = this.down('form').getComponent('type');
+					el.store.clearFilter(false);
+				}
+			}
+		};
 
 		this.callParent(arguments);
 	}

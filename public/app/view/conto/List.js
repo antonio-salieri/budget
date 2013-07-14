@@ -3,10 +3,16 @@ Ext.define('Budget.view.conto.List' ,{
     alias: 'widget.contolist',
 
     title: 'All bills',
-
+	deleteColumnTooltip: "Storno",
 	store: 'Contos',
 	
-	placeDeleteColumn: false,
+	viewConfig: {
+        getRowClass: function(record) {
+            if (record.get('stornoTime') !== null) {
+                return 'strike-through-row';
+            }
+        }
+    },
 	
     initComponent: function() {
 		
@@ -35,6 +41,13 @@ Ext.define('Budget.view.conto.List' ,{
 		}, {
 			header: 'Entry Time',  
 			dataIndex: 'entryTime',  
+			flex: 1, 
+			hideable: true,
+			hidden: true,
+			renderer: this.renderDateTime
+		}, {
+			header: 'Storno Time',  
+			dataIndex: 'stornoTime',  
 			flex: 1, 
 			hideable: true,
 			hidden: true,
@@ -106,6 +119,28 @@ Ext.define('Budget.view.conto.List' ,{
 			}]
 		};
 	},
+	
+//	removeItem: function(grid, rowIndex, colIndex) {
+//		var response = Ext.Msg.show({
+//			title:'Confirm storno process!',
+//			msg: 'Are you sure that you want to storno selected item?',
+//			buttons: Ext.Msg.YESNO,
+//			icon: Ext.Msg.QUESTION,
+//			
+//			rowIndex: rowIndex,
+//			colIndex: colIndex,
+//			grid: grid,
+//
+//			fn: function(button_id, text, opt) {
+//				var rec = grid.getStore().getAt(rowIndex);
+//				if (button_id == 'yes')
+//				{
+//					rec.set('stornoTime', Ext.util.Format.date(new Date(), 'Y-m-d H:i:s'));
+//					grid.getStore().synchronize();
+//				}
+//			}
+//		});
+//	},
 	
 	/*
 	 * Renderers

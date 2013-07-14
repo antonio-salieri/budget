@@ -44,15 +44,18 @@ class TransactionService extends AbstractBudgetService
 		$original_note = $data['note'];
 		
 		/** @var Budget\Entity\Transaction */
-		$transaction = parent::add($data, false);
+		$transaction = parent::add($data, true);
 		
 		if ($transaction instanceof Transaction) {
 			$transaction_type = $transaction->getType();
+			$transaction_id = $transaction->getId();
 
 			/*
 			 * Resolve TAX
 			 */
 			if ($transaction_type->getResolveTaxAutomatically()) {
+				$data['linkedTransactionId'] = $transaction_id;
+				
 				$data['type'] = $this->_getAutoResolveTaxType($transaction_type)->getId();
 
 				if ($transaction_type->getType() == TransactionType::OUTCOME_TYPE) {
@@ -82,9 +85,12 @@ Original note:
 			 * Resolve 1:1 conto
 			 */
 			if ($transaction_type->getIs11()) {
+				$data['linkedTransactionId'] = $transaction_id;
+
 				$data['type'] = $transaction->getType()->getId();
 				$data['income'] = null;
 				$data['outcome'] = $transaction->getOutcome();
+				
 				
 				if ($transaction_type->getResolveTaxAutomatically())
 				{
@@ -97,7 +103,7 @@ Original note:
 				$data['note'] = "
 Automated note:
 >>>>>>>>>>>>>>>>
-This is automatically created transaction regarding 1:1 rule.'
+This is automatically created transaction regarding 1:1 rule.
 >>>>>>>>>>>>>>>>
 
 Original note:
@@ -133,7 +139,29 @@ Original note:
 	 */
 	public function delete($id, $flush = true)
 	{
-		throw new Exception("Delete of transactions is forbidden!");
+		$this->_storno($id, $flush);
+	}
+	
+	private function _storno($id, $flush)
+	{
+		/** @var Budget\Entity\Transaction */
+		$entity  = $this->getRepository()->findOneById($id);
+		$storno_time = new \DateTime();
+		if ($entity) {
+			$entity->setStornoTime($storno_time);
+		}
+		
+		/*
+		 * Storno linked transactions
+		 */
+		$linked_transactions = $this->getRepository()->findBy(array('linkedTransactionId' => $id));
+		foreach ($linked_transactions['result'] as $transaction) {
+			$transaction->setStornoTime($storno_time);
+		}
+		
+		if ($flush) {
+			$this->getObjectManager()->flush();
+		}
 	}
 	
 	/**
