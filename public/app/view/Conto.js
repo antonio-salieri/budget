@@ -40,15 +40,17 @@ Ext.define('Budget.view.Conto' ,{
 	
 	reloadTotals: function(store, records, success_flag, opts) {
 		
-		var totals_data = store.getProxy().getReader().rawData.totals_data,
-			totals_view = this.getComponent('contototal');
-		
-		if (totals_data.balance) {
-			totals_view.setTitle(totals_view.baseTitle + ' [' + Ext.util.Format.currency(totals_data.balance) + ']');
-		} else {
-			totals_view.setTitle(totals_view.baseTitle);
+		if (success_flag) {
+			var totals_data = store.getProxy().getReader().rawData.totals_data,
+				totals_view = this.getComponent('contototal');
+
+			if (totals_data.balance) {
+				totals_view.setTitle(totals_view.baseTitle + ' [' + Ext.util.Format.currency(totals_data.balance) + ']');
+			} else {
+				totals_view.setTitle(totals_view.baseTitle);
+			}
+			totals_view.update(totals_data);
 		}
 		
-		totals_view.update(totals_data);
 	}
 });

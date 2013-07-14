@@ -377,15 +377,18 @@ class Transaction implements BudgetEntityInterface
      */
     public function setStornoTime($stornoTime)
     {
-		$this->stornoTime = null;
-		if (!empty($stornoTime)) {
-			
-			if ($stornoTime instanceof \DateTime) {
-				$this->stornoTime = $stornoTime;
-			} else if (is_string($stornoTime)) {
-				$this->stornoTime = new \DateTime($stornoTime);
-			}
-		}
+        
+		if ($this->stornoTime == null)
+        {
+            if (!empty($stornoTime)) {
+                
+                if ($stornoTime instanceof \DateTime) {
+                    $this->stornoTime = $stornoTime;
+                } else if (is_string($stornoTime)) {
+                    $this->stornoTime = new \DateTime($stornoTime);
+                }
+            }
+        }
     
         return $this;
     }

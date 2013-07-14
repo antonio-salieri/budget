@@ -4,6 +4,7 @@ namespace Budget\Service;
 
 use Budget\Entity\Transaction;
 use Budget\Entity\TransactionType;
+use Budget\Entity\Company;
 use Budget\Entity\BudgetEntityInterface;
 
 class TransactionService extends AbstractBudgetService
@@ -56,8 +57,15 @@ class TransactionService extends AbstractBudgetService
 			if ($transaction_type->getResolveTaxAutomatically()) {
 				$data['linkedTransactionId'] = $transaction_id;
 				
-				$data['type'] = $this->_getAutoResolveTaxType($transaction_type)->getId();
-
+				$resolving_type = $this->_getAutoResolveTaxType($transaction_type)->getId();
+				
+				if (! ($resolving_type instanceof TransactionType))
+				{
+					throw new \Exception("Error creating TAX autoresolve entry. Tax resolve transaction type is not set!");
+				}
+				
+				$data['type'] = $resolving_type;
+				
 				if ($transaction_type->getType() == TransactionType::OUTCOME_TYPE) {
 					$data['income'] = $transaction->getOutcome() - $transaction->getOutcome() * (100 / ( Transaction::TAX_PERCENT + 100 ));
 					$data['outcome'] = null;
@@ -98,6 +106,10 @@ Original note:
 				}
 				
 				$company_11 = $this->getObjectManager()->getRepository('Budget\Entity\Company')->get11Company();
+                if (! ($company_11 instanceof Company))
+				{
+					throw new \Exception("Error creating 1:1 entry. 1:1 company is not set!");
+				}
 				$data['company'] = $company_11->getId();
 				$data['is11'] = true;
 				$data['note'] = "
