@@ -34,15 +34,15 @@ abstract class AbstractRepository extends EntityRepository
 				
 				// Check if filter is of query type like combobox querying
 				if (isset($data['property'])) {
-					if (!empty($data['query'])) {
+					if (!empty($data['query']) || !empty($data['value'])) {
 						$field = $data['property'];
-						$value = $data['query'] . '%';
+						$value = (!empty($data['query'])) ? $data['query'] : $data['value'];
+						$value .=  '%';
 						
 						$where->add($qb->expr()->like("main.{$field}", $param_placeholder_prefix . $param_placeholder_id));
 						$qb->setParameter($param_placeholder_prefix . $param_placeholder_id, $value);
 					} else {
-						// Query was empty so return all items without filtering
-						return $this;
+						break;
 					}
 					
 				} else {

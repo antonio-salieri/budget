@@ -57,20 +57,20 @@ class TransactionService extends AbstractBudgetService
 			if ($transaction_type->getResolveTaxAutomatically()) {
 				$data['linkedTransactionId'] = $transaction_id;
 				
-				$resolving_type = $this->_getAutoResolveTaxType($transaction_type)->getId();
+				$resolving_type = $this->_getAutoResolveTaxType($transaction_type);
 				
 				if (! ($resolving_type instanceof TransactionType))
 				{
 					throw new \Exception("Error creating TAX autoresolve entry. Tax resolve transaction type is not set!");
 				}
 				
-				$data['type'] = $resolving_type;
+				$data['type'] = $resolving_type->getId();
 				
 				if ($transaction_type->getType() == TransactionType::OUTCOME_TYPE) {
 					$data['income'] = $transaction->getOutcome() - $transaction->getOutcome() * (100 / ( Transaction::TAX_PERCENT + 100 ));
 					$data['outcome'] = null;
 				} else {
-					$data['outcome'] = $transaction->getIncome() * Transaction::TAX_PERCENT / 100;
+					$data['outcome'] = $transaction->getIncome() - $transaction->getIncome() * (100 / ( Transaction::TAX_PERCENT + 100 ));
 					$data['income'] = null;
 				}
 

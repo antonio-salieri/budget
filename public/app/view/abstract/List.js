@@ -24,6 +24,8 @@ Ext.define('Budget.view.abstract.List' ,{
 		
         this.callParent(arguments);
 		this.on('afterrender', this.loadStore, this);
+//		this.store.on('beforeload', this.showMask, this);
+//		this.store.on('afterload', this.hideMask, this);
     },
 
 	renderBoolean: function(val) {
@@ -112,6 +114,13 @@ Ext.define('Budget.view.abstract.List' ,{
 		if (this.store) {
 			this.store.load();
 		}
-	}
+	}//,
+	
+//	showMask: function() {
+//		this.setLoading(true);
+//	},
+//	hideMask: function() {
+//		this.setLoading(false);
+//	}
 	
 });

@@ -10,7 +10,6 @@ Ext.define('Budget.view.admin.acct_type.List' ,{
     initComponent: function() {
 		
         this.columns = [{
-			header: 'Id',
 			dataIndex: 'id',  
 			flex: 1, 
 			hideable: false, 

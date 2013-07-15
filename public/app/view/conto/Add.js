@@ -46,18 +46,6 @@ Ext.define('Budget.view.conto.Add' ,{
 			}, {
 				xtype: 'combobox',
 				multiSelect: false,
-				name: 'user',
-				allowBlank: (this.action != 'outcome'),
-				store: 'Users',
-				fieldLabel: 'User',
-				queryMode: 'remote',
-				triggerAction: 'all',
-				valueField: 'id',
-				disabled: (this.action == 'income'),
-				displayField: 'firstName'
-			}, {
-				xtype: 'combobox',
-				multiSelect: false,
 				name: 'company',
 				allowBlank: false,
 				store: 'Companies',
@@ -65,7 +53,32 @@ Ext.define('Budget.view.conto.Add' ,{
 				queryMode: 'remote',
 				triggerAction: 'all',
 				valueField: 'id',
-				displayField: 'name'
+				displayField: 'name',
+				listeners: {
+					select: {
+						fn: this.filterUsers,
+						scope: this
+					}
+				}
+			}, {
+				xtype: 'combobox',
+				multiSelect: false,
+				name: 'user',
+				allowBlank: (this.action != 'outcome'),
+				store: 'Users',
+				fieldLabel: 'User',
+				queryMode: 'remote',
+				triggerAction: 'all',
+				valueField: 'id',
+				itemId: 'user',
+				disabled: (this.action == 'income'),
+				displayField: 'firstName',
+				tpl: new Ext.XTemplate(
+					'<tpl for=".">',
+						'<div class="x-boundlist-item">{firstName} {lastName}</div>',
+					'</tpl>',
+					{disableFormats: true}
+				)
 			}, {
 				xtype: 'combobox',
 				multiSelect: false,
@@ -115,12 +128,25 @@ Ext.define('Budget.view.conto.Add' ,{
 		this.listeners = {
 			close: {
 				fn: function() {
-					var el = this.down('form').getComponent('type');
-					el.store.clearFilter(false);
+					var form = this.down('form'),
+						type_el = form.getComponent('type'),
+						user_el = form.getComponent('user');
+					type_el.store.clearFilter(false);
+					user_el.store.clearFilter(false);
 				}
 			}
 		};
 
 		this.callParent(arguments);
+	},
+	
+	filterUsers: function(combo, records, eOpts)
+	{
+		return;
+		var el = this.down('form').getComponent('user'),
+			company_id = combo.getValue();
+		el.store.clearFilter(true);
+		el.store.filter('c.id', company_id);
+		
 	}
 });

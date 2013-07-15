@@ -31,6 +31,11 @@ Ext.define('Budget.controller.Conto', {
 			
 			'contofilterform button[action=filter]': {
 				click: this.fliterConto
+			},
+			
+			'contofilterform button[action=reset]': {
+				click: this.resetFliter,
+				scope: this
 			}
         });
     },
@@ -66,7 +71,8 @@ Ext.define('Budget.controller.Conto', {
 		
 		if (form.isValid())
 		{
-			win.close();
+//			win.close();
+			form.form.reset();
 			store.add(values);
 			store.synchronize();
 		}
@@ -114,6 +120,13 @@ Ext.define('Budget.controller.Conto', {
 			});
 		}
 		
+		if (filter_data.length > 0)
+		{
+			form.setTitle('<em style="color:red">'+form.baseTitle+'</em>');
+		} else {
+			form.setTitle(form.baseTitle);
+		}
+		
 		proxy.setExtraParam('filter', Ext.JSON.encode(filter_data));
 		
 //		Ext.Object.each(data, function(key, value, me) {
@@ -121,5 +134,11 @@ Ext.define('Budget.controller.Conto', {
 //		});
 		
 		store.load();
+	},
+	
+	resetFliter: function(button) {
+		var form = button.up('contofilterform');
+		form.form.reset();
+		this.fliterConto(button);
 	}
 });

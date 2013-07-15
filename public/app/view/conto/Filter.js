@@ -5,17 +5,24 @@ Ext.define('Budget.view.conto.Filter' ,{
 	frame: false,
 	bodyPadding: 5,
 	layout: 'anchor',
+	baseTitle: 'Filter',
 	
 	store: ['Contos'],
 	
     initComponent: function() {
 		
 		this.buttons = [{
+			text: 'Reset',
+			action: 'reset',
+			disabled: false
+		}, {
 			text: 'Filter',
 			action: 'filter',
 			disabled: false
 		}];
-
+	
+		this.title = this.baseTitle;
+		
         this.items = [{
 			xtype: 'container',
 			flex: 1,
