@@ -51,7 +51,7 @@ class TransactionController extends AbstractBudgetController
 		
 		return new JsonModel(array(
 			'success' => true,
-			'msg' => 'Update succeeded'
+			'msg' => 'Transaction edit succeeded'
 		));
 	}
 	
@@ -73,7 +73,7 @@ class TransactionController extends AbstractBudgetController
 		
 		return new JsonModel(array(
 			'success' => true,
-			'msg' => 'Addition succeeded'
+			'msg' => 'Transaction addition succeeded'
 		));
 	}
 	
@@ -96,7 +96,7 @@ class TransactionController extends AbstractBudgetController
 		
 		return new JsonModel(array(
 			'success' => true,
-			'msg' => 'Addition succeeded'
+			'msg' => 'Transaction cancellation succeeded'
 		));
 	}	
 }

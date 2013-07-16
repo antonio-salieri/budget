@@ -2,7 +2,13 @@ Ext.BLANK_IMAGE_URL = '/img/s.gif';
 
 
 Ext.Ajax.on("requestcomplete", function(oConn, oResp, oOpts) {
-    var oData = Ext.decode(oResp.responseText);
+	try {
+		var oData = Ext.decode(oResp.responseText);
+	} catch (err) {
+		Ext.Msg.show({title: 'Greška!',msg: oResp.responseText,icon: Ext.MessageBox.ERROR,buttons: Ext.Msg.OK});
+		return false;
+	}
+	
     if (Ext.type(oData) === 'object' && !oData.success) {
 		if (oData.msg) {
             Ext.Msg.show({title: 'Greška!',msg: oData.msg,icon: Ext.MessageBox.ERROR,buttons: Ext.Msg.OK});
@@ -11,7 +17,21 @@ Ext.Ajax.on("requestcomplete", function(oConn, oResp, oOpts) {
             Ext.Msg.show({title: 'Greška na serveru',msg: 'Nedefinisana greška', icon: Ext.MessageBox.ERROR,buttons: Ext.Msg.OK});
             return false;
         }
-    }
+    } else if (oData.success && oData.msg) {
+		var notificationConfig = {
+			position: 't',
+			cls: 'ux-notification-light',
+			iconCls: 'ux-notification-icon-information',
+			closable: false,
+			title: 'Success',
+			html: oData.msg,
+			slideInAnimation: 'bounceOut',
+			slideBackAnimation: 'easeIn',
+			useXAxis: true,
+			autoCloseDelay: 2000
+		};
+		Ext.create('Ext.ux.window.Notification', notificationConfig).show();
+	}
 });
 
 Ext.Ajax.on("requestexception", 

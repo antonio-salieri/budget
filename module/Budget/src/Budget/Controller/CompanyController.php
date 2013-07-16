@@ -60,7 +60,7 @@ class CompanyController extends AbstractBudgetController
 		
 		return new JsonModel(array(
 			'success' => true,
-			'msg' => 'Update succeeded'
+			'msg' => 'Company edit succeeded'
 //			'msg' => $this->translate('Uspešan update')
 		));
 	}
@@ -83,7 +83,7 @@ class CompanyController extends AbstractBudgetController
 		
 		return new JsonModel(array(
 			'success' => true,
-			'msg' => 'Addition succeeded'
+			'msg' => 'Company addition succeeded'
 		));
 	}
 	
@@ -105,7 +105,7 @@ class CompanyController extends AbstractBudgetController
 		
 		return new JsonModel(array(
 			'success' => true,
-			'msg' => 'Addition succeeded'
+			'msg' => 'Company delete succeeded'
 		));
 	}
 }

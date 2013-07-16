@@ -51,7 +51,7 @@ class UserController extends AbstractBudgetController
 		
 		return new JsonModel(array(
 			'success' => true,
-			'msg' => 'Update succeeded'
+			'msg' => 'User update succeeded'
 		));
 	}
 	
@@ -73,7 +73,7 @@ class UserController extends AbstractBudgetController
 		
 		return new JsonModel(array(
 			'success' => true,
-			'msg' => 'Addition succeeded'
+			'msg' => 'User addition succeeded'
 		));
 	}
 	
@@ -95,7 +95,7 @@ class UserController extends AbstractBudgetController
 		
 		return new JsonModel(array(
 			'success' => true,
-			'msg' => 'Addition succeeded'
+			'msg' => 'User removal succeeded'
 		));
 	}
 	
@@ -103,27 +103,27 @@ class UserController extends AbstractBudgetController
 	 * @deprecated
 	 * @return \Zend\View\Model\JsonModel
 	 */
-	public function companiesAction()
-	{
-		$service = $this->getServiceLocator()->get('budget.service.user');
-		
-		try {
-			$data = \Zend\Json\Decoder::decode($this->getRequest()->getContent(), \Zend\Json\Json::TYPE_ARRAY);
-			$user_companies = $service->getUserCompanies(
-				$data['id']
-			);
-			
-		} catch (\Exception $e) {
-			return new JsonModel(array(
-				'success' => false,
-				'msg' => $e->getMessage()
-			));
-		}
-		
-		return new JsonModel(array(
-			'success' => true,
-			'result' => $user_companies,
-			'msg' => 'Addition succeeded'
-		));
-	}
+//	public function companiesAction()
+//	{
+//		$service = $this->getServiceLocator()->get('budget.service.user');
+//		
+//		try {
+//			$data = \Zend\Json\Decoder::decode($this->getRequest()->getContent(), \Zend\Json\Json::TYPE_ARRAY);
+//			$user_companies = $service->getUserCompanies(
+//				$data['id']
+//			);
+//			
+//		} catch (\Exception $e) {
+//			return new JsonModel(array(
+//				'success' => false,
+//				'msg' => $e->getMessage()
+//			));
+//		}
+//		
+//		return new JsonModel(array(
+//			'success' => true,
+//			'result' => $user_companies,
+//			'msg' => 'Addition succeeded'
+//		));
+//	}
 }
