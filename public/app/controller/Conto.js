@@ -75,6 +75,7 @@ Ext.define('Budget.controller.Conto', {
 			form.form.reset();
 			store.add(values);
 			store.synchronize();
+			store.reload();
 		}
 	},
 	
