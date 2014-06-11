@@ -151,9 +151,13 @@ Original note:
 	 */
 	public function delete($id, $flush = true)
 	{
-		$this->_storno($id, $flush);
+		parent::delete($id, $flush);
 	}
 	
+	private function storno($id, $flush)
+	{
+		$this->_storno($id, $flush);
+	}
 	private function _storno($id, $flush)
 	{
 		/** @var Budget\Entity\Transaction */

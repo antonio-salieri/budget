@@ -34,7 +34,7 @@ Ext.define('Budget.view.abstract.List' ,{
 		
 	renderDateTime: function(date_obj) {
 		if (date_obj) {
-			var dt = new Date(date_obj.date);
+			var dt = new Date(date_obj.date.replace(/-/g,' '));
 			return Ext.Date.format(dt, 'd. m. Y. H:i:s');
 		} else {
 			return '-';
@@ -43,7 +43,7 @@ Ext.define('Budget.view.abstract.List' ,{
 
 	renderDate: function(date_obj) {
 		if (date_obj) {
-			var dt = new Date(date_obj.date);
+			var dt = new Date(date_obj.date.replace(/-/g,' '));
 			return Ext.Date.format(dt, 'd. m. Y.');
 		} else {
 			return '-';

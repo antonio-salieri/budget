@@ -77,7 +77,7 @@ class TransactionController extends AbstractBudgetController
 		));
 	}
 	
-	public function stornoAction()
+	public function deleteAction()
 	{
 		/** @var Budget\Service\TransactionService */
 		$service = $this->getServiceLocator()->get('budget.service.transaction');
@@ -85,6 +85,29 @@ class TransactionController extends AbstractBudgetController
 		try {
 			$data = \Zend\Json\Decoder::decode($this->getRequest()->getContent(), \Zend\Json\Json::TYPE_ARRAY);
 			$service->delete(
+				$data['id']
+			);
+		} catch (\Exception $e) {
+			return new JsonModel(array(
+				'success' => false,
+				'msg' => $e->getMessage()
+			));
+		}
+		
+		return new JsonModel(array(
+			'success' => true,
+			'msg' => 'Transaction cancellation succeeded'
+		));
+	}
+	
+	public function stornoAction()
+	{
+		/** @var Budget\Service\TransactionService */
+		$service = $this->getServiceLocator()->get('budget.service.transaction');
+		
+		try {
+			$data = \Zend\Json\Decoder::decode($this->getRequest()->getContent(), \Zend\Json\Json::TYPE_ARRAY);
+			$service->storno(
 				$data['id']
 			);
 		} catch (\Exception $e) {

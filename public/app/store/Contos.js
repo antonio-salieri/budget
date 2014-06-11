@@ -9,7 +9,7 @@ Ext.define('Budget.store.Contos', {
 			read	: '/transaction',
 			update	: undefined,
 			create  : '/transaction/add',
-			destroy : '/transaction/storno'
+			destroy : '/transaction/delete'
 		},
 		reader: {
 			type: 'json',
